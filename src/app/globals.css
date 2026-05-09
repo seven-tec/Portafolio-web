@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 :root {
   --background: #ffffff;
@@ -23,4 +24,36 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Ajustes para rehype-pretty-code */
+figure[data-rehype-pretty-code-figure] {
+  @apply my-6 rounded-lg overflow-hidden border border-gray-800 bg-[#0d1117];
+}
+figure[data-rehype-pretty-code-figure] pre {
+  background-color: transparent !important;
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+figure[data-rehype-pretty-code-figure] code {
+  @apply px-4 border-none text-sm;
+  /* Shiki ya se encarga de los colores */
+}
+
+@keyframes ping-pong {
+  0%, 100% { left: 0%; }
+  50% { left: 100%; }
+}
+
+@keyframes audioBounce {
+  0% {
+    transform: scaleY(0.7);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scaleY(1.1);
+    opacity: 1;
+  }
 }

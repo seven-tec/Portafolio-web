@@ -1,65 +1,107 @@
-import Image from "next/image";
+import Link from "next/link";
+import { ProjectUseCases } from "../application/use-cases/ProjectUseCases";
+import { EngramUseCases } from "../application/use-cases/EngramUseCases";
+import { ImpactDashboard } from "../components/ImpactDashboard";
 
 export default function Home() {
+  const projects = ProjectUseCases.getPublishedProjects();
+  const engrams = EngramUseCases.getPublishedEngrams().slice(0, 3); // Mostramos solo los últimos 3
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Pablo Valenzuela",
+    "url": process.env.NEXT_PUBLIC_SITE_URL || "https://tusitio.com",
+    "jobTitle": "Ingeniero Informático",
+    "description": "Especializado en resolver problemas complejos mediante arquitectura moderna, automatización y desarrollo local de IA.",
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <main className="p-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <div className="max-w-4xl mx-auto space-y-16 mt-8">
+        
+        {/* Hero Section */}
+        <header className="space-y-4">
+          <h1 className="text-5xl font-bold text-white tracking-tight">
+            Orquestando sistemas escalables y agentes inteligentes.
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-xl text-gray-400 leading-relaxed max-w-2xl">
+            Ingeniero Informático especializado en resolver problemas complejos mediante arquitectura moderna, automatización y desarrollo local de IA.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+        </header>
+
+        {/* Dashboard de Impacto */}
+        <ImpactDashboard />
+
+        {/* Proyectos Destacados (Bento Grid) */}
+        <section>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-semibold text-white">Casos de Estudio</h2>
+            <Link href="/projects" className="text-sm font-mono text-emerald-400 hover:underline">
+              Ver todos -{">"}
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {projects.map((project) => (
+              <Link 
+                href={`/projects/${project.slug}`} 
+                key={project.slug}
+                className="group block p-6 bg-[#111] border border-gray-800 rounded-xl hover:border-emerald-500/50 transition-colors"
+              >
+                <div className="flex gap-2 mb-3">
+                  {project.tags.slice(0, 2).map(tag => (
+                    <span key={tag} className="text-xs font-mono text-gray-500 bg-gray-900 px-2 py-1 rounded">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <h3 className="text-xl font-bold text-gray-200 group-hover:text-emerald-400 transition-colors mb-2">
+                  {project.title}
+                </h3>
+                <p className="text-sm text-gray-400 line-clamp-2">
+                  {project.summary}
+                </p>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        {/* Engineering Journal */}
+        <section>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-semibold text-white">Engineering Journal</h2>
+            <Link href="/engrams" className="text-sm font-mono text-blue-400 hover:underline">
+              Abrir terminal -{">"}
+            </Link>
+          </div>
+          <div className="space-y-3">
+            {engrams.map((engram) => (
+              <Link 
+                href={`/engrams/${engram.slug}`} 
+                key={engram.slug}
+                className="flex items-center justify-between p-4 bg-[#111] border border-gray-800 rounded-lg hover:border-blue-500/50 transition-colors"
+              >
+                <div>
+                  <span className="text-xs font-mono text-blue-400 mr-3 uppercase tracking-wider">
+                    {engram.topic}
+                  </span>
+                  <span className="text-sm font-medium text-gray-300">
+                    {engram.title}
+                  </span>
+                </div>
+                <span className="text-xs font-mono text-gray-600 hidden sm:block">
+                  {engram.date}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+      </div>
+    </main>
   );
 }

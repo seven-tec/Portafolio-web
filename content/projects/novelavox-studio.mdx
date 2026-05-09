@@ -1,0 +1,57 @@
+---
+title: "NovelaVox Studio 3.1: Orquestación de TTS Local"
+summary: "Plataforma de generación de audio narrativo impulsada por IA con persistencia local y UI de estudio profesional."
+tags: ["IA Local", "IndexedDB", "TypeScript", "Orquestación de Agentes"]
+date: "2026-04-20"
+metrics: ["Latencia Cero en Playback", "Persistencia 100% Local", "Generación Multivocal"]
+---
+
+## El Desafío Narrativo y Técnico
+
+Generar audio narrativo inmersivo para un universo transmedia expansivo —específicamente una novela web con una profunda estética tribal y múltiples diseños de personajes— presentaba un desafío técnico inusual. Depender exclusivamente de APIs cloud genéricas generaba dos problemas críticos: 
+
+1. **Falta de granularidad:** Los modelos estándar no lograban capturar la entonación y el "color" específico requerido para cada personaje del lore.
+2. **Latencia y Costos:** Cada ajuste en la línea de diálogo requería una nueva petición de red, haciendo que el flujo creativo en la interfaz fuera lento y económicamente ineficiente a escala.
+
+## Decisiones Arquitectónicas
+
+Para solucionar esto, diseñé **NovelaVox Studio 3.1**, una herramienta que traslada el peso computacional y el almacenamiento al lado del cliente:
+
+1. **Persistencia Pesada en IndexedDB:** En lugar de saturar un backend con archivos `.wav` temporales, toda la metadata de los personajes, los guiones y los audios generados se almacenan de forma local mediante IndexedDB. Esto permite una experiencia de uso fluida, sin tiempos de carga de red al cambiar de proyecto.
+2. **UI/UX de Estudio Profesional:** Se construyó una interfaz de usuario similar a los DAWs (Digital Audio Workstations) modernos, con controles granulares para el tono, la velocidad y las pausas, permitiendo un ajuste milimétrico antes de la síntesis.
+3. **Orquestación de Modelos Locales:** El sistema orquesta la síntesis de voz (TTS) integrando modelos locales para el renderizado final, reservando las APIs externas de mayor peso (como Google AI Pro) únicamente cuando se requieren inferencias semánticas complejas para la interpretación del texto.
+
+<WaveformPlayer />
+
+## Trade-offs (Decisiones de Diseño)
+
+| Enfoque | Ventajas | Desventajas / Costos |
+| :--- | :--- | :--- |
+| **IndexedDB vs Cloud Storage** | Privacidad total, cero costos de hosting, latencia cero en lectura. | Dependiente de la cuota de almacenamiento del navegador del usuario. |
+| **Procesamiento Local vs API 100%** | Control absoluto del pipeline de audio, trabajo offline posible. | Mayor consumo de memoria RAM y CPU en la máquina cliente. |
+
+## El Core de Persistencia
+
+El manejo de blobs de audio gigantes en el navegador requirió una capa de abstracción eficiente sobre IndexedDB para no bloquear el hilo principal.
+
+```typescript
+// Abstracción simplificada del servicio de persistencia en NovelaVox 3.1
+export class AudioStorageService {
+  async saveCharacterAudio(characterId: string, audioBlob: Blob): Promise<void> {
+    const db = await this.initDB();
+    const transaction = db.transaction(['voice_takes'], 'readwrite');
+    const store = transaction.objectStore('voice_takes');
+    
+    // Almacenamiento eficiente sin bloquear el UI thread
+    await store.put({
+      id: `${characterId}_${Date.now()}`,
+      blob: audioBlob,
+      timestamp: new Date().toISOString()
+    });
+  }
+}
+```
+
+## Impacto
+
+El resultado es un estudio de audio completo ejecutándose en el navegador, capaz de generar horas de narración inmersiva sin incurrir en costos de infraestructura cloud y permitiendo un flujo de trabajo iterativo e instantáneo.
