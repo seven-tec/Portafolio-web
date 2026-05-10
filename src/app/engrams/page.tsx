@@ -3,7 +3,7 @@ import { EngramUseCases } from "../../application/use-cases/EngramUseCases";
 
 export const metadata = {
   title: "Engrams | Seven",
-  description: "Diario de ingeniería, notas técnicas y aprendizajes en desarrollo.",
+  description: "Diario de ingeniería, notas sobre arquitectura de sistemas y registro de decisiones técnicas.",
 };
 
 export default function EngramsIndex() {

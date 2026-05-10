@@ -2,6 +2,7 @@ import "./globals.css"; // Asegurate de que esto importe Tailwind
 import Link from "next/link";
 import { ReactNode } from "react";
 import { Metadata } from 'next';
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://tusitio.com'), // Acordate de cambiarlo por tu dominio real
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="es" className="dark scroll-smooth">
+    <html lang="es" className="dark scroll-smooth" data-scroll-behavior="smooth">
       <body className="bg-[#0a0a0a] text-gray-200 min-h-screen flex flex-col font-sans selection:bg-emerald-500/30">
         
         {/* Navegación Sticky */}
@@ -60,6 +61,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <div className="flex-grow w-full">
           {children}
         </div>
+        <Analytics />
 
         {/* Footer Minimalista */}
         <footer className="border-t border-gray-800 py-8 mt-auto">

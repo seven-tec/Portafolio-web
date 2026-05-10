@@ -3,7 +3,7 @@ import { ProjectUseCases } from "../../application/use-cases/ProjectUseCases";
 
 export const metadata = {
   title: "Proyectos | Seven",
-  description: "Casos de estudio, arquitectura de sistemas and soluciones.",
+  description: "Casos de estudio detallados sobre arquitectura de sistemas, resolución de problemas complejos e impacto comercial real.",
 };
 
 export default function ProjectsIndex() {

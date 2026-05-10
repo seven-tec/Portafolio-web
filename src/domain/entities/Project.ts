@@ -9,6 +9,7 @@ export const ProjectFrontmatterSchema = z.object({
   repositoryUrl: z.string().url("Debe ser una URL válida").optional(),
   demoUrl: z.string().url("Debe ser una URL válida").optional(),
   metrics: z.array(z.string()).optional(),
+  draft: z.boolean().optional(),
 });
 
 // 2. Extraemos el tipo de TypeScript automáticamente (DRY)
