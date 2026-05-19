@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { Metadata } from 'next';
 import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypePrettyCode from "rehype-pretty-code";
+import { ArchitectureFlow } from "../../../components/mdx/ArchitectureFlow";
+import { WaveformPlayer } from "../../../components/mdx/WaveformPlayer";
 
 export async function generateStaticParams() {
   const engrams = EngramUseCases.getPublishedEngrams();
@@ -25,7 +27,7 @@ export async function generateMetadata({
       description: engram.title,
       type: 'article',
       publishedTime: engram.date,
-      authors: ['Pablo Valenzuela'],
+      authors: ['Seven'],
       tags: [engram.topic],
     },
   };
@@ -77,7 +79,7 @@ export default async function EngramDetail({ params }: { params: Promise<{ slug:
 
           <section className="mt-8">
             <article className="prose prose-invert prose-emerald max-w-none bg-[#111] p-8 rounded-xl border border-gray-800">
-              <MDXRemote source={engram.content} options={mdxOptions} />
+              <MDXRemote source={engram.content} options={mdxOptions} components={{ ArchitectureFlow, WaveformPlayer }} />
             </article>
           </section>
 

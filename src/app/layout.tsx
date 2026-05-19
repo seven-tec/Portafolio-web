@@ -7,12 +7,12 @@ import { Analytics } from "@vercel/analytics/react";
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://tusitio.com'), // Acordate de cambiarlo por tu dominio real
   title: {
-    default: 'Pablo "Seven" Valenzuela | Arquitecto de Software',
+    default: 'Seven | Software Engineer & Systems Orchestrator',
     template: '%s | Seven',
   },
   description: 'Ingeniero Informático especializado en arquitectura de sistemas, orquestación de IA local y desarrollo de alto rendimiento.',
   openGraph: {
-    title: 'Pablo "Seven" Valenzuela | Arquitectura y Orquestación',
+    title: 'Seven | Arquitectura y Orquestación',
     description: 'Portafolio de ingeniería, estudios de caso y diario técnico.',
     url: process.env.NEXT_PUBLIC_SITE_URL || 'https://tusitio.com',
     siteName: 'Sistemas Orquestados',
@@ -28,15 +28,19 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="es" className="dark scroll-smooth" data-scroll-behavior="smooth">
-      <body className="bg-[#0a0a0a] text-gray-200 min-h-screen flex flex-col font-sans selection:bg-emerald-500/30">
+    <html lang="es" className="dark scroll-smooth" data-scroll-behavior="smooth" suppressHydrationWarning>
+      <body className="bg-background text-foreground min-h-screen flex flex-col font-sans selection:bg-primary/30">
+        
+        {/* Background Grid */}
+        <div className="fixed inset-0 grid-background pointer-events-none"></div>
+        <div className="fixed inset-0 pointer-events-none" style={{ background: 'radial-gradient(circle at center, transparent 20%, var(--background) 90%)' }}></div>
         
         {/* Navegación Sticky */}
-        <nav className="border-b border-gray-800 bg-[#0a0a0a]/80 backdrop-blur-md sticky top-0 z-50">
+        <nav className="border-b border-border bg-background/80 backdrop-blur-md sticky top-0 z-50">
           <div className="max-w-4xl mx-auto px-8 py-4 flex justify-between items-center">
             <Link 
               href="/" 
-              className="font-bold text-white tracking-tight hover:text-emerald-400 transition-colors"
+              className="font-bold text-white tracking-tight hover:text-primary transition-colors"
             >
               ~/seven
             </Link>
@@ -64,7 +68,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Analytics />
 
         {/* Footer Minimalista */}
-        <footer className="border-t border-gray-800 py-8 mt-auto">
+        <footer className="border-t border-border py-8 mt-auto">
           <div className="max-w-4xl mx-auto px-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-gray-500 font-mono">
             <p>© {new Date().getFullYear()} Sistemas Orquestados.</p>
             <p>Built with Next.js 16 & Antigravity</p>

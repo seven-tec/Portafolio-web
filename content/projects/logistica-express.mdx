@@ -30,7 +30,18 @@ Para resolver este desafío, diseñé una arquitectura orientada al rendimiento 
 
 ## Orquestación del Código
 
-<ArchitectureFlow />
+<ArchitectureFlow 
+  node1Icon="S5" 
+  node1Title="Cliente Reactivo" 
+  node1Subtitle="Svelte 5 UI" 
+  node1Color="orange"
+  node2Icon="RS" 
+  node2Title="Core Engine" 
+  node2Subtitle="Rust + Mutex Locks" 
+  node2Color="blue"
+  flowLabel="Mutación Atómica" 
+  flowSublabel="Latencia Sub-10ms"
+/>
 
 Para garantizar la integridad, el motor principal utiliza un *mutex* granular en Rust para las actualizaciones críticas de inventario.
 

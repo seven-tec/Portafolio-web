@@ -24,25 +24,24 @@ export const SpotlightCard = ({ children }: SpotlightCardProps) => {
     <div
       ref={cardRef}
       onMouseMove={handleMouseMove}
-      className="relative overflow-hidden p-6 bg-[#111] border border-gray-800 rounded-xl hover:border-emerald-500/30 transition-colors group"
+      className="relative overflow-hidden p-6 bg-surface/70 backdrop-blur-md border border-border rounded-xl hover:border-primary/20 transition-colors group"
     >
-      {/* Spotlight effect overlay */}
+      {/* Spotlight effect overlay (Fondo) */}
       <div
         className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition duration-300"
         style={{
-          background: `radial-gradient(400px circle at ${position.x}px ${position.y}px, rgba(16, 185, 129, 0.15), transparent 80%)`,
+          background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(var(--primary-rgb), 0.1), transparent 80%)`,
         }}
       />
       
-      {/* Borde sutil que también brilla */}
+      {/* Spotlight effect overlay (Borde) */}
       <div
-        className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition duration-300"
+        className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition duration-300 rounded-xl border border-transparent"
         style={{
-          background: `radial-gradient(400px circle at ${position.x}px ${position.y}px, rgba(16, 185, 129, 0.4), transparent 80%)`,
-          maskImage: 'linear-gradient(black, black)',
-          WebkitMaskImage: 'linear-gradient(black, black)',
-          maskClip: 'content-box',
-          WebkitMaskClip: 'content-box',
+          background: `radial-gradient(400px circle at ${position.x}px ${position.y}px, rgba(var(--primary-rgb), 0.5), transparent 80%) border-box`,
+          WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+          WebkitMaskComposite: 'xor',
+          maskComposite: 'exclude',
         }}
       />
 

@@ -41,7 +41,7 @@ export const ImpactDashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         
         {/* Card 1: Latencia (Grande) */}
-        <div className="md:col-span-2 p-6 bg-[#0d1117] border border-gray-800 rounded-2xl hover:border-emerald-500/30 hover:bg-gradient-to-br hover:from-[#0d1117] hover:to-[#11221a] transition-all duration-500 group">
+        <div className="md:col-span-2 p-6 bg-surface border border-border rounded-2xl hover:border-primary/30 hover:bg-gradient-to-br hover:from-surface hover:to-primary/10 transition-all duration-500 group">
           <p className="text-xs font-mono text-gray-500 uppercase tracking-wider mb-2">Latencia de Procesamiento</p>
           <h3 className="text-5xl font-bold font-mono text-emerald-400 mb-2">
             &lt; {latency} ms
@@ -52,7 +52,7 @@ export const ImpactDashboard = () => {
         </div>
 
         {/* Card 2: Dependencia Cloud */}
-        <div className="p-6 bg-[#0d1117] border border-gray-800 rounded-2xl hover:border-emerald-500/30 hover:bg-gradient-to-br hover:from-[#0d1117] hover:to-[#11221a] transition-all duration-500 group">
+        <div className="p-6 bg-surface border border-border rounded-2xl hover:border-primary/30 hover:bg-gradient-to-br hover:from-surface hover:to-primary/10 transition-all duration-500 group">
           <p className="text-xs font-mono text-gray-500 uppercase tracking-wider mb-2">Procesamiento Local</p>
           <h3 className="text-5xl font-bold font-mono text-white mb-2">
             {localRate}%
@@ -63,7 +63,7 @@ export const ImpactDashboard = () => {
         </div>
 
         {/* Card 3: Modelos */}
-        <div className="p-6 bg-[#0d1117] border border-gray-800 rounded-2xl hover:border-emerald-500/30 hover:bg-gradient-to-br hover:from-[#0d1117] hover:to-[#11221a] transition-all duration-500 group">
+        <div className="p-6 bg-surface border border-border rounded-2xl hover:border-primary/30 hover:bg-gradient-to-br hover:from-surface hover:to-primary/10 transition-all duration-500 group">
           <p className="text-xs font-mono text-gray-500 uppercase tracking-wider mb-2">Modelos</p>
           <h3 className="text-5xl font-bold font-mono text-white mb-2">
             {models}
@@ -74,18 +74,18 @@ export const ImpactDashboard = () => {
         </div>
 
         {/* Card 4: Escalabilidad (Full Width abajo para romper la monotonía) */}
-        <div className="md:col-span-4 p-6 bg-[#0d1117] border border-gray-800 rounded-2xl hover:border-emerald-500/30 hover:bg-gradient-to-br hover:from-[#0d1117] hover:to-[#11221a] transition-all duration-500 group">
+        <div className="md:col-span-4 p-6 bg-surface border border-border rounded-2xl hover:border-primary/30 hover:bg-gradient-to-br hover:from-surface hover:to-primary/10 transition-all duration-500 group">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
               <p className="text-xs font-mono text-gray-500 uppercase tracking-wider mb-2">Escalabilidad de Negocio</p>
-              <h3 className="text-5xl font-bold font-mono text-emerald-400 mb-2">
+              <h3 className="text-5xl font-bold font-mono text-primary mb-2">
                 +{words}k
               </h3>
               <p className="text-sm text-gray-400">
                 Palabras procesadas por mes proyectadas.
               </p>
             </div>
-            <div className="text-sm text-gray-400 max-w-md border-l border-gray-800 md:pl-6">
+            <div className="text-sm text-gray-400 max-w-md border-l border-border md:pl-6">
               <strong className="text-white">Costo de infraestructura: $0.</strong> Al trasladar el peso del TTS al navegador del usuario mediante IndexedDB y modelos locales, el margen de ganancia escala al 100%. Esto es lo que los inversores llaman viabilidad comercial pura.
             </div>
           </div>
