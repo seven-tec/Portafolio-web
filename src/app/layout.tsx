@@ -1,28 +1,29 @@
-import "./globals.css"; // Asegurate de que esto importe Tailwind
+import "./globals.css";
 import Link from "next/link";
 import { ReactNode } from "react";
 import { Metadata } from 'next';
 import { Analytics } from "@vercel/analytics/react";
+import { siteUrl } from "../lib/site";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://tusitio.com'), // Acordate de cambiarlo por tu dominio real
+  metadataBase: new URL(siteUrl()),
   title: {
-    default: 'Seven | Software Engineer & Systems Orchestrator',
+    default: 'Seven | Arquitectura web, IA aplicada y sistemas de alto rendimiento',
     template: '%s | Seven',
   },
-  description: 'Ingeniero Informático especializado en arquitectura de sistemas, orquestación de IA local y desarrollo de alto rendimiento.',
+  description: 'Arquitectura web de alto rendimiento, sistemas modulares e IA aplicada a problemas reales de negocio. Consultoría técnica para startups, empresas B2B y creadores premium.',
   openGraph: {
-    title: 'Seven | Arquitectura y Orquestación',
-    description: 'Portafolio de ingeniería, estudios de caso y diario técnico.',
-    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://tusitio.com',
-    siteName: 'Sistemas Orquestados',
+    title: 'Seven | Arquitectura web de alto rendimiento e IA aplicada',
+    description: 'Arquitectura web de alto rendimiento, sistemas modulares e IA aplicada a problemas reales de negocio.',
+    url: siteUrl(),
+    siteName: 'Seven',
     locale: 'es_CL',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Seven | Arquitectura de Software',
-    description: 'Estudios de caso y diario técnico de ingeniería.',
+    title: 'Seven | Arquitectura web de alto rendimiento e IA aplicada',
+    description: 'Arquitectura web de alto rendimiento, sistemas modulares e IA aplicada a problemas reales de negocio.',
   },
 };
 
@@ -49,8 +50,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               <Link href="/" className="hover:text-white transition-colors">
                 Home
               </Link>
-              {/* Nota: Estas dos rutas (índices) las tendremos que crear luego, 
-                  por ahora apuntan al vacío o al 404 si no existen */}
               <Link href="/projects" className="hover:text-white transition-colors">
                 Proyectos
               </Link>
@@ -71,7 +70,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <footer className="border-t border-border py-8 mt-auto">
           <div className="max-w-4xl mx-auto px-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-gray-500 font-mono">
             <p>© {new Date().getFullYear()} Sistemas Orquestados.</p>
-            <p>Built with Next.js 16 & Antigravity</p>
+            <p>Built with Next.js 16</p>
           </div>
         </footer>
 

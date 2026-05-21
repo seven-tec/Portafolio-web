@@ -2,10 +2,17 @@ import { EngramUseCases } from "../../application/use-cases/EngramUseCases";
 import { PageHeader } from "../../components/ui/PageHeader";
 import { Grid } from "../../components/ui/Grid";
 import { EngramCard } from "../../components/ui/EngramCard";
+import { siteUrl } from "../../lib/site";
 
 export const metadata = {
-  title: "Engrams | Seven",
+  title: "Engrams",
   description: "Diario de ingeniería, notas sobre arquitectura de sistemas y registro de decisiones técnicas.",
+  alternates: {
+    canonical: siteUrl("/engrams"),
+  },
+  openGraph: {
+    url: siteUrl("/engrams"),
+  },
 };
 
 export default function EngramsIndex() {

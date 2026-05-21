@@ -2,10 +2,18 @@ import { ProjectUseCases } from "../../application/use-cases/ProjectUseCases";
 import { PageHeader } from "../../components/ui/PageHeader";
 import { Grid } from "../../components/ui/Grid";
 import { ProjectCard } from "../../components/ui/ProjectCard";
+import { Metadata } from "next";
+import { siteUrl } from "../../lib/site";
 
-export const metadata = {
-  title: "Proyectos | Seven",
-  description: "Casos de estudio detallados sobre arquitectura de sistemas, resolución de problemas complejos e impacto comercial real.",
+export const metadata: Metadata = {
+  title: "Proyectos",
+  description: "Casos de estudio de arquitectura web de alto rendimiento, WASM, IA aplicada y sistemas modulares. Proyectos reales con impacto comercial medible.",
+  alternates: {
+    canonical: siteUrl("/projects"),
+  },
+  openGraph: {
+    url: siteUrl("/projects"),
+  },
 };
 
 export default function ProjectsIndex() {

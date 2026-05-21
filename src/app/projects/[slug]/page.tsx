@@ -6,6 +6,7 @@ import rehypePrettyCode from "rehype-pretty-code";
 import { ArchitectureFlow } from "../../../components/mdx/ArchitectureFlow";
 import { WaveformPlayer } from "../../../components/mdx/WaveformPlayer";
 import { SpotlightCard } from "../../../components/SpotlightCard";
+import { siteUrl } from "../../../lib/site";
 
 export async function generateStaticParams() {
   const projects = ProjectUseCases.getPublishedProjects();
@@ -23,9 +24,13 @@ export async function generateMetadata({
   return {
     title: project.title,
     description: project.summary,
+    alternates: {
+      canonical: siteUrl(`/projects/${slug}`),
+    },
     openGraph: {
       title: project.title,
       description: project.summary,
+      url: siteUrl(`/projects/${slug}`),
       type: 'article',
       publishedTime: project.date,
       authors: ['Seven'],
