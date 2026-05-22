@@ -36,6 +36,11 @@ export async function generateMetadata({
       authors: ['Seven'],
       tags: project.tags,
     },
+    twitter: {
+      card: 'summary_large_image',
+      title: project.title,
+      description: project.summary,
+    },
   };
 }
 

@@ -15,6 +15,12 @@ export const metadata: Metadata = {
   openGraph: {
     url: siteUrl("/architecture-review"),
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Solicitar evaluación de arquitectura | Seven",
+    description:
+      "Evaluación técnica de arquitectura para startups, empresas B2B y creadores premium con problemas reales de rendimiento, escalabilidad o integración de IA.",
+  },
 };
 
 export default function ArchitectureReviewPage() {
