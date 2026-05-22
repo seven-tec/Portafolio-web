@@ -1,8 +1,8 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { submitArchitectureReview, type FormState } from "./actions";
-import { AlertCircle, AlertTriangle, ArrowRight, Send } from "lucide-react";
+import { AlertCircle, AlertTriangle, ArrowRight, ChevronDown, ChevronUp, Send } from "lucide-react";
 import type { ArchitectureReviewField } from "../../domain/entities/ArchitectureReview";
 
 const initialState: FormState = {
@@ -25,6 +25,8 @@ export function ArchitectureReviewForm({
     initialState
   );
 
+  const [showOptional, setShowOptional] = useState(false);
+
   if (state.success) {
     return (
       <section>
@@ -41,6 +43,9 @@ export function ArchitectureReviewForm({
 
   const fieldErrors = Object.keys(state.errors).filter((k) => k !== "_form");
   const hasFormError = !!state.errors._form;
+
+  const requiredFields = fields.filter((f) => f.required);
+  const optionalFields = fields.filter((f) => !f.required);
 
   return (
     <section>
@@ -74,7 +79,7 @@ export function ArchitectureReviewForm({
       )}
 
       <form action={formAction} className="space-y-6" noValidate>
-        {fields.map((field) => {
+        {requiredFields.map((field) => {
           const hasError = !!state.errors[field.name];
 
           return (
@@ -84,7 +89,7 @@ export function ArchitectureReviewForm({
                 className="block text-sm font-medium text-gray-300 mb-1.5"
               >
                 {field.label}
-                {field.required && <span className="text-primary ml-1">*</span>}
+                <span className="text-primary ml-1">*</span>
               </label>
 
               {field.type === "textarea" ? (
@@ -92,7 +97,7 @@ export function ArchitectureReviewForm({
                   id={field.name}
                   name={field.name}
                   placeholder={field.placeholder}
-                  required={field.required}
+                  required
                   rows={4}
                   defaultValue={state.values[field.name] ?? ""}
                   className={`w-full px-4 py-2.5 bg-surface border rounded-lg text-gray-200 placeholder-gray-600 focus:outline-none focus:ring-2 transition-colors resize-y ${
@@ -105,7 +110,7 @@ export function ArchitectureReviewForm({
                 <select
                   id={field.name}
                   name={field.name}
-                  required={field.required}
+                  required
                   defaultValue={state.values[field.name] ?? ""}
                   className={`w-full px-4 py-2.5 bg-surface border rounded-lg text-gray-200 focus:outline-none focus:ring-2 transition-colors ${
                     hasError
@@ -126,7 +131,7 @@ export function ArchitectureReviewForm({
                   name={field.name}
                   type={field.type}
                   placeholder={field.placeholder}
-                  required={field.required}
+                  required
                   defaultValue={state.values[field.name] ?? ""}
                   className={`w-full px-4 py-2.5 bg-surface border rounded-lg text-gray-200 placeholder-gray-600 focus:outline-none focus:ring-2 transition-colors ${
                     hasError
@@ -146,6 +151,88 @@ export function ArchitectureReviewForm({
             </div>
           );
         })}
+
+        {optionalFields.length > 0 && (
+          <div className="border-t border-border pt-4">
+            <button
+              type="button"
+              onClick={() => setShowOptional(!showOptional)}
+              className="flex items-center gap-2 text-sm text-gray-400 hover:text-gray-200 transition-colors"
+            >
+              {showOptional ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+              Agregar más contexto técnico (opcional)
+            </button>
+
+            {showOptional && (
+              <div className="mt-4 space-y-6">
+                {optionalFields.map((field) => {
+                  const hasError = !!state.errors[field.name];
+
+                  return (
+                    <div key={field.name}>
+                      <label
+                        htmlFor={field.name}
+                        className="block text-sm font-medium text-gray-300 mb-1.5"
+                      >
+                        {field.label}
+                      </label>
+
+                      {field.type === "textarea" ? (
+                        <textarea
+                          id={field.name}
+                          name={field.name}
+                          placeholder={field.placeholder}
+                          rows={4}
+                          defaultValue={state.values[field.name] ?? ""}
+                          className={`w-full px-4 py-2.5 bg-surface border rounded-lg text-gray-200 placeholder-gray-600 focus:outline-none focus:ring-2 transition-colors resize-y ${
+                            hasError
+                              ? "border-red-400 focus:ring-red-400/50 focus:border-red-400/50"
+                              : "border-border focus:ring-primary/50 focus:border-primary/50"
+                          }`}
+                        />
+                      ) : field.type === "select" ? (
+                        <select
+                          id={field.name}
+                          name={field.name}
+                          defaultValue={state.values[field.name] ?? ""}
+                          className={`w-full px-4 py-2.5 bg-surface border rounded-lg text-gray-200 focus:outline-none focus:ring-2 transition-colors ${
+                            hasError
+                              ? "border-red-400 focus:ring-red-400/50 focus:border-red-400/50"
+                              : "border-border focus:ring-primary/50 focus:border-primary/50"
+                          }`}
+                        >
+                          <option value="">Seleccionar...</option>
+                          {(field.options ?? []).map((opt) => (
+                            <option key={opt} value={opt}>
+                              {opt.charAt(0).toUpperCase() + opt.slice(1)}
+                            </option>
+                          ))}
+                        </select>
+                      ) : (
+                        <input
+                          id={field.name}
+                          name={field.name}
+                          type={field.type}
+                          placeholder={field.placeholder}
+                          defaultValue={state.values[field.name] ?? ""}
+                          className={`w-full px-4 py-2.5 bg-surface border rounded-lg text-gray-200 placeholder-gray-600 focus:outline-none focus:ring-2 transition-colors ${
+                            hasError
+                              ? "border-red-400 focus:ring-red-400/50 focus:border-red-400/50"
+                              : "border-border focus:ring-primary/50 focus:border-primary/50"
+                          }`}
+                        />
+                      )}
+
+                      {hasError && (
+                        <p className="text-xs text-red-400 mt-1">{state.errors[field.name]}</p>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        )}
 
         <div className="flex flex-col gap-4 pt-4">
           <p className="text-sm text-gray-500 leading-relaxed border border-border rounded-lg p-4 bg-surface/50">
