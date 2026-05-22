@@ -4,6 +4,17 @@ import { ReactNode } from "react";
 import { Metadata } from 'next';
 import { Analytics } from "@vercel/analytics/react";
 import { siteUrl } from "../lib/site";
+import { Inter, JetBrains_Mono } from "next/font/google";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl()),
@@ -29,7 +40,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="es" className="dark scroll-smooth" data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html lang="es" className={`dark scroll-smooth ${inter.variable} ${jetbrainsMono.variable}`} data-scroll-behavior="smooth" suppressHydrationWarning>
       <body className="bg-background text-foreground min-h-screen flex flex-col font-sans selection:bg-primary/30">
         
         {/* Background Grid */}
