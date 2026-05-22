@@ -2,7 +2,7 @@
 
 Bienvenido al código fuente de mi portafolio web personal. 
 
-**🔗 Sitio en vivo:** [Ver Portafolio (Vercel)](https://portafolio-i4i1dn7wa-seven-s-projects1.vercel.app)
+**🔗 Sitio en vivo:** [portfolio-arquitectura.vercel.app](https://portfolio-arquitectura.vercel.app)
 
 ## 📌 Sobre Mí (Seven)
 Ingeniero Informático especializado en resolver problemas complejos mediante arquitectura moderna, automatización y desarrollo local de IA. Mi enfoque está en la orquestación de sistemas escalables y agentes inteligentes, priorizando performance, seguridad y valor de negocio.
