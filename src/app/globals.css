@@ -20,6 +20,7 @@
   --color-primary: var(--primary);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
+  --font-display: var(--font-outfit);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -37,6 +38,11 @@
 body {
   background: var(--background);
   color: var(--foreground);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-outfit), var(--font-sans), sans-serif;
+  letter-spacing: -0.02em;
 }
 
 /* Ajustes para rehype-pretty-code */
