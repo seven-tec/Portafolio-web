@@ -20,7 +20,7 @@
   --color-primary: var(--primary);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
-  --font-display: var(--font-outfit);
+  --font-display: var(--font-sora);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -41,7 +41,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-outfit), var(--font-sans), sans-serif;
+  font-family: var(--font-sora), var(--font-sans), sans-serif;
   letter-spacing: -0.02em;
 }
 
