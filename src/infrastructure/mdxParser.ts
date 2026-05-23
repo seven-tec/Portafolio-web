@@ -7,9 +7,9 @@ import { Engram, EngramFrontmatterSchema } from "../domain/entities/Engram";
 // Ruta base asumiendo que corremos el código desde la raíz del proyecto
 const PROJECTS_PATH = path.join(process.cwd(), "content", "projects");
 
-export function getProjectBySlug(slug: string): Project {
+export function getProjectBySlug(slug: string, basePath = PROJECTS_PATH): Project {
   const realSlug = slug.replace(/\.mdx$/, "");
-  const fullPath = path.join(PROJECTS_PATH, `${realSlug}.mdx`);
+  const fullPath = path.join(basePath, `${realSlug}.mdx`);
   const fileContents = fs.readFileSync(fullPath, "utf8");
 
   // gray-matter separa la metadata (data) del markdown (content)
@@ -25,13 +25,13 @@ export function getProjectBySlug(slug: string): Project {
   };
 }
 
-export function getAllProjects(): Project[] {
-  if (!fs.existsSync(PROJECTS_PATH)) return [];
+export function getAllProjects(basePath = PROJECTS_PATH): Project[] {
+  if (!fs.existsSync(basePath)) return [];
   
-  const files = fs.readdirSync(PROJECTS_PATH);
+  const files = fs.readdirSync(basePath);
   const projects = files
     .filter((file) => file.endsWith(".mdx"))
-    .map((file) => getProjectBySlug(file))
+    .map((file) => getProjectBySlug(file, basePath))
     // Ordenamos por fecha descendente
     .sort((a, b) => (a.date > b.date ? -1 : 1));
 
@@ -40,9 +40,9 @@ export function getAllProjects(): Project[] {
 
 const ENGRAMS_PATH = path.join(process.cwd(), "content", "engrams");
 
-export function getEngramBySlug(slug: string): Engram {
+export function getEngramBySlug(slug: string, basePath = ENGRAMS_PATH): Engram {
   const realSlug = slug.replace(/\.mdx$/, "");
-  const fullPath = path.join(ENGRAMS_PATH, `${realSlug}.mdx`);
+  const fullPath = path.join(basePath, `${realSlug}.mdx`);
   const fileContents = fs.readFileSync(fullPath, "utf8");
 
   const { data, content } = matter(fileContents);
@@ -57,13 +57,13 @@ export function getEngramBySlug(slug: string): Engram {
   };
 }
 
-export function getAllEngrams(): Engram[] {
-  if (!fs.existsSync(ENGRAMS_PATH)) return [];
+export function getAllEngrams(basePath = ENGRAMS_PATH): Engram[] {
+  if (!fs.existsSync(basePath)) return [];
   
-  const files = fs.readdirSync(ENGRAMS_PATH);
+  const files = fs.readdirSync(basePath);
   const engrams = files
     .filter((file) => file.endsWith(".mdx"))
-    .map((file) => getEngramBySlug(file))
+    .map((file) => getEngramBySlug(file, basePath))
     .sort((a, b) => (a.date > b.date ? -1 : 1));
 
   return engrams;
