@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Solicitar evaluación de arquitectura | Seven",
+    title: "Solicitar evaluación de arquitectura | SevenTec",
     description:
       "Evaluación técnica de arquitectura para startups, empresas B2B y creadores premium con problemas reales de rendimiento, escalabilidad o integración de IA.",
   },

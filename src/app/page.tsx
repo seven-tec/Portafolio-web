@@ -7,7 +7,7 @@ import { ArrowRight, AlertTriangle, Zap, Cpu, Layers, Brain, Route, Target, File
 import { siteUrl } from "../lib/site";
 
 export const metadata: Metadata = {
-  title: "Seven | Arquitectura web de alto rendimiento e IA aplicada",
+  title: "SevenTec | Arquitectura web de alto rendimiento e IA aplicada",
   description: "Arquitectura web de alto rendimiento y sistemas de IA aplicados a problemas reales de negocio. Diseño y construyo aplicaciones rápidas, modulares y escalables.",
   alternates: {
     canonical: siteUrl(),
@@ -23,7 +23,7 @@ export default function Home() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
-    "name": "Seven",
+    "name": "SevenTec",
     "url": siteUrl(),
     "jobTitle": "Arquitecto de Software",
     "description": "Arquitectura web de alto rendimiento y sistemas de IA aplicados a problemas reales de negocio.",

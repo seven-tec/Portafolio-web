@@ -20,22 +20,22 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl()),
   title: {
-    default: 'Seven | Arquitectura web, IA aplicada y sistemas de alto rendimiento',
-    template: '%s | Seven',
+    default: 'SevenTec | Arquitectura de Sistemas y Alto Rendimiento',
+    template: '%s | SevenTec',
   },
-  description: 'Arquitectura web de alto rendimiento, sistemas modulares e IA aplicada a problemas reales de negocio. Consultoría técnica para startups, empresas B2B y creadores premium.',
+  description: 'Arquitectura de sistemas de alto rendimiento, ingeniería de software e IA aplicada a problemas reales de negocio. Consultoría técnica para startups, empresas B2B y creadores premium.',
   openGraph: {
-    title: 'Seven | Arquitectura web de alto rendimiento e IA aplicada',
-    description: 'Arquitectura web de alto rendimiento, sistemas modulares e IA aplicada a problemas reales de negocio.',
+    title: 'SevenTec | Arquitectura de Sistemas y Alto Rendimiento',
+    description: 'Arquitectura de sistemas de alto rendimiento, ingeniería de software e IA aplicada a problemas reales de negocio.',
     url: siteUrl(),
-    siteName: 'Seven',
+    siteName: 'SevenTec',
     locale: 'es_CL',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Seven | Arquitectura web de alto rendimiento e IA aplicada',
-    description: 'Arquitectura web de alto rendimiento, sistemas modulares e IA aplicada a problemas reales de negocio.',
+    title: 'SevenTec | Arquitectura de Sistemas y Alto Rendimiento',
+    description: 'Arquitectura de sistemas de alto rendimiento, ingeniería de software e IA aplicada a problemas reales de negocio.',
   },
 };
 
