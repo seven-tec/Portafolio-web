@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Seven | Arquitectura web, IA aplicada y sistemas de alto rendimiento";
+export const alt = "SevenTec | Arquitectura de Sistemas y Alto Rendimiento";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -14,28 +14,56 @@ export default function Image() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          padding: "80px",
-          background: "linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%)",
+          padding: "90px",
+          background: "linear-gradient(135deg, #0B0F14 0%, #111827 100%)",
           fontFamily: "monospace",
         }}
       >
+        {/* Isotipo simulado en CSS en vez del texto ~/seven */}
         <div
           style={{
-            fontSize: 24,
-            color: "#facc15",
-            marginBottom: 16,
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+            marginBottom: "32px",
           }}
         >
-          ~/seven
+          <div
+            style={{
+              fontSize: 28,
+              fontWeight: "bold",
+              color: "#15D1D9",
+              letterSpacing: "4px",
+            }}
+          >
+            SEVENTEC
+          </div>
+          <div
+            style={{
+              width: "1px",
+              height: "20px",
+              background: "#334155",
+            }}
+          />
+          <div
+            style={{
+              fontSize: 14,
+              color: "#A7B0BF",
+              letterSpacing: "2px",
+            }}
+          >
+            ARQUITECTURA DE SISTEMAS
+          </div>
         </div>
+
         <div
           style={{
             fontSize: 64,
             fontWeight: "bold",
-            color: "#f5f5f5",
-            letterSpacing: "-1",
-            lineHeight: 1.1,
-            marginBottom: 24,
+            color: "#E6EDF7",
+            letterSpacing: "-1.5px",
+            lineHeight: 1.15,
+            marginBottom: "12px",
           }}
         >
           Arquitectura web
@@ -44,22 +72,23 @@ export default function Image() {
           style={{
             fontSize: 64,
             fontWeight: "bold",
-            color: "#f5f5f5",
-            letterSpacing: "-1",
-            lineHeight: 1.1,
-            marginBottom: 24,
+            color: "#E6EDF7",
+            letterSpacing: "-1.5px",
+            lineHeight: 1.15,
+            marginBottom: "32px",
           }}
         >
           de alto rendimiento
         </div>
         <div
           style={{
-            fontSize: 28,
-            color: "#a0a0a0",
+            fontSize: 26,
+            color: "#A7B0BF",
             lineHeight: 1.4,
+            letterSpacing: "-0.5px",
           }}
         >
-          IA aplicada · Performance Engineering · Arquitectura modular
+          IA Aplicada · Performance Engineering · Arquitectura Modular
         </div>
       </div>
     ),

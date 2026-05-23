@@ -1,5 +1,6 @@
 import "./globals.css";
 import Link from "next/link";
+import Image from "next/image";
 import { ReactNode } from "react";
 import { Metadata } from 'next';
 import { Analytics } from "@vercel/analytics/react";
@@ -52,9 +53,16 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <div className="max-w-4xl mx-auto px-8 py-4 flex justify-between items-center">
             <Link 
               href="/" 
-              className="font-bold text-white tracking-tight hover:text-primary transition-colors"
+              className="flex items-center hover:opacity-90 transition-opacity"
             >
-              ~/seven
+              <Image 
+                src="/logo/seventec-horizontal.svg" 
+                alt="SevenTec Logo" 
+                width={120} 
+                height={35}
+                priority
+                className="h-7 w-auto object-contain"
+              />
             </Link>
             
             <div className="flex gap-6 text-sm font-medium text-gray-400">
@@ -80,7 +88,19 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         {/* Footer Minimalista */}
         <footer className="border-t border-border py-8 mt-auto">
           <div className="max-w-4xl mx-auto px-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-gray-500 font-mono">
-            <p>© {new Date().getFullYear()} Sistemas Orquestados.</p>
+            <div className="flex items-center gap-3">
+              <Image 
+                src="/logo/seventec-logomark.svg" 
+                alt="SevenTec Logomark" 
+                width={20} 
+                height={20} 
+                className="opacity-45 hover:opacity-80 transition-opacity"
+              />
+              <div className="flex flex-col gap-0.5">
+                <span className="text-gray-400">© 2026 SevenTec. Todos los derechos reservados.</span>
+                <span className="text-[10px] text-gray-600">Sistemas Orquestados · IA & Systems Architecture</span>
+              </div>
+            </div>
             <p>Built with Next.js 16</p>
           </div>
         </footer>

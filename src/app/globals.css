@@ -3,12 +3,12 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0B0F14;
   --surface: #f3f4f6;
   --surface-hover: #e5e7eb;
-  --border: #e5e7eb;
-  --primary: #10b981;
-  --primary-rgb: 16, 185, 129;
+  --border: #334155;
+  --primary: #0FB6C8;
+  --primary-rgb: 15, 182, 200;
 }
 
 @theme inline {
@@ -24,13 +24,13 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --surface: #111111;
-    --surface-hover: #222222;
-    --border: #1f2937;
-    --primary: #10b981;
-    --primary-rgb: 16, 185, 129;
+    --background: #0B0F14;
+    --foreground: #E6EDF7;
+    --surface: #111827;
+    --surface-hover: #1F2937;
+    --border: #334155;
+    --primary: #15D1D9;
+    --primary-rgb: 21, 209, 217;
   }
 }
 
