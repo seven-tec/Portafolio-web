@@ -58,7 +58,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               <Image 
                 src="/logo/seventec-horizontal-navbar.svg" 
                 alt="SevenTec Logo" 
-                width={160} 
+                width={143} 
                 height={28}
                 priority
                 className="h-7 w-auto object-contain"
