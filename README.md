@@ -127,6 +127,6 @@ Este script ejecuta `tests/infrastructure/test-parser.ts` usando `tsx` de manera
 ## 📅 Hoja de Ruta e Integraciones Futuras
 
 En la carpeta `docs/` se documentan las siguientes fases y directrices de ingeniería de la plataforma:
-- [Integración Dinámica con GitHub](file:///C:/Users/3bc41/.gemini/antigravity/scratch/portfolio-arquitectura/docs/github-integration.md): Especificación técnica para consumir la API de GitHub e inyectar repositorios dinámicamente como adaptadores de la capa de infraestructura.
-- [Políticas de SEO & Dominio](file:///C:/Users/3bc41/.gemini/antigravity/scratch/portfolio-arquitectura/docs/seo-and-domain-policy.md): Lineamientos de marcado semántico, metadatos y optimización de rastreo.
-- [Mapeo de Analíticas](file:///C:/Users/3bc41/.gemini/antigravity/scratch/portfolio-arquitectura/docs/analytics-policy.md): Integración con Vercel Analytics para medir el embudo de conversión de leads técnicos.
+- [Integración Dinámica con GitHub](./docs/github-integration.md): Especificación técnica para consumir la API de GitHub e inyectar repositorios dinámicamente como adaptadores de la capa de infraestructura.
+- [Políticas de SEO & Dominio](./docs/seo-and-domain-policy.md): Lineamientos de marcado semántico, metadatos y optimización de rastreo.
+- [Mapeo de Analíticas](./docs/analytics-policy.md): Integración con Vercel Analytics para medir el embudo de conversión de leads técnicos.
