@@ -56,10 +56,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               className="flex items-center hover:opacity-90 transition-opacity"
             >
               <Image 
-                src="/logo/seventec-horizontal.svg" 
+                src="/logo/seventec-horizontal-navbar.svg" 
                 alt="SevenTec Logo" 
-                width={120} 
-                height={35}
+                width={160} 
+                height={28}
                 priority
                 className="h-7 w-auto object-contain"
               />
