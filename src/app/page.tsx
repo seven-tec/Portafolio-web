@@ -73,6 +73,26 @@ export default function Home() {
           )}
         </header>
 
+        {/* Métricas clave de impacto */}
+        {content.metricsHighlight && (
+          <section className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 animate-fade-in-up animation-delay-400">
+            {content.metricsHighlight.map((metric, i) => (
+              <div key={i} className="border border-border/40 rounded-xl p-6 bg-surface/20 backdrop-blur-sm relative overflow-hidden group hover:border-primary/30 transition-all duration-300">
+                <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <span className="text-4xl font-bold text-primary font-display tracking-tight block mb-1">
+                  {metric.value}
+                </span>
+                <span className="text-sm font-semibold text-white block mb-2">
+                  {metric.label}
+                </span>
+                <p className="text-xs text-gray-400 leading-relaxed">
+                  {metric.description}
+                </p>
+              </div>
+            ))}
+          </section>
+        )}
+
         {/* 2. Problemas que resuelvo */}
         <section>
           <div className="mb-8">

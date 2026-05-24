@@ -70,7 +70,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               />
             </Link>
             
-            <div className="flex gap-6 text-sm font-medium text-gray-400">
+            <div className="flex items-center gap-6 text-sm font-medium text-gray-400">
               <Link href="/" className="hover:text-white transition-colors">
                 Home
               </Link>
@@ -79,6 +79,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               </Link>
               <Link href="/engrams" className="hover:text-white transition-colors">
                 Engrams
+              </Link>
+              <Link 
+                href="/architecture-review" 
+                className="bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 hover:border-primary/40 px-3 py-1.5 rounded-lg text-xs transition-all font-semibold"
+              >
+                Solicitar evaluación
               </Link>
             </div>
           </div>
@@ -106,7 +112,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 <span className="text-[10px] text-gray-600">Sistemas Orquestados · IA & Systems Architecture</span>
               </div>
             </div>
-            <p>Built with Next.js 16</p>
           </div>
         </footer>
 

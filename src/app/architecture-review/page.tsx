@@ -25,6 +25,8 @@ export const metadata: Metadata = {
 
 export default function ArchitectureReviewPage() {
   const content = PortfolioUseCases.getArchitectureReviewContent();
+  const email = process.env.NEXT_PUBLIC_CONTACT_EMAIL;
+  const linkedin = process.env.NEXT_PUBLIC_CONTACT_LINKEDIN;
 
   return (
     <main className="p-8">
@@ -99,6 +101,25 @@ export default function ArchitectureReviewPage() {
           responseExpectation={content.responseExpectation}
           submitLabel={content.submitLabel}
         />
+
+        {/* Canales alternativos (Habilitados dinámicamente) */}
+        {email && linkedin && (
+          <section className="text-center border-t border-border/30 pt-12 max-w-xl mx-auto space-y-4 animate-fade-in-up">
+            <h3 className="text-lg font-semibold text-white">¿Preferís contacto directo?</h3>
+            <p className="text-sm text-gray-400 leading-relaxed">
+              Si tu consulta es puntual y no querés completar el formulario detallado, podés escribirme directamente a mi correo o conectar por LinkedIn.
+            </p>
+            <div className="flex justify-center gap-6 text-sm font-mono text-gray-500 pt-2">
+              <a href={`mailto:${email}`} className="hover:text-primary transition-colors">
+                {email}
+              </a>
+              <span>•</span>
+              <a href={linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+                LinkedIn
+              </a>
+            </div>
+          </section>
+        )}
 
         {/* Close */}
         <section className="text-center pb-16">

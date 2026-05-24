@@ -21,7 +21,7 @@ export const architectureReviewContent = ArchitectureReviewContentSchema.parse({
     "Solicitudes de soporte informal sin contexto suficiente",
   ],
   responseExpectation:
-    "Tras revisar el contexto, responderé por escrito con un diagnóstico preliminar y una posible ruta de trabajo.",
+    "Responderé personalmente por escrito con un análisis técnico preliminar y una propuesta de pasos a seguir en un plazo máximo de 48 horas hábiles.",
   submitLabel: "Enviar evaluación",
   fields: [
     {

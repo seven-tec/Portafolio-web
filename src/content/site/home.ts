@@ -137,4 +137,21 @@ export const homeContent = PortfolioHomeContentSchema.parse({
     "Performance Engineering",
     "IA Aplicada",
   ],
+  metricsHighlight: [
+    {
+      value: "< 50ms",
+      label: "Resolución Algorítmica (WASM)",
+      description: "Ejecución del motor transaccional de Sudoku a tiempo nativo dentro del cliente.",
+    },
+    {
+      value: "Sub-10ms",
+      label: "Latencia en Concurrencia (Rust)",
+      description: "Gestión transaccional y control de stock atómico con mutex locks de alta eficiencia.",
+    },
+    {
+      value: "100% Local",
+      label: "Persistencia In-Browser (IndexedDB)",
+      description: "Generación de audios in-browser eliminando costos cloud y latencia de red.",
+    }
+  ],
 });

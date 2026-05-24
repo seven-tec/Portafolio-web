@@ -38,6 +38,14 @@ export const ProcessStepSchema = z.object({
 
 export type ProcessStep = z.infer<typeof ProcessStepSchema>;
 
+export const MetricHighlightSchema = z.object({
+  value: z.string().min(1),
+  label: z.string().min(1),
+  description: z.string().min(1),
+});
+
+export type MetricHighlight = z.infer<typeof MetricHighlightSchema>;
+
 export const PortfolioHomeContentSchema = z.object({
   eyebrow: z.string().min(1),
   headline: z.string().min(1),
@@ -64,6 +72,7 @@ export const PortfolioHomeContentSchema = z.object({
     description: z.string().min(1),
   }),
   heroBadges: z.array(z.string()).optional(),
+  metricsHighlight: z.array(MetricHighlightSchema).optional(),
 });
 
 export type PortfolioHomeContent = z.infer<typeof PortfolioHomeContentSchema>;
