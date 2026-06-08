@@ -1,10 +1,10 @@
-import { PortfolioUseCases } from "../../application/use-cases/PortfolioUseCases";
+import { PortfolioUseCases } from "../../../application/use-cases/PortfolioUseCases";
 import { Metadata } from "next";
 import Link from "next/link";
-import { SpotlightCard } from "../../components/SpotlightCard";
+import { SpotlightCard } from "../../../components/SpotlightCard";
 import { CheckCircle2, XCircle, ArrowRight, FileCheck } from "lucide-react";
 import { ArchitectureReviewForm } from "./ArchitectureReviewForm";
-import { siteUrl } from "../../lib/site";
+import { siteUrl } from "../../../lib/site";
 
 interface ArchitectureReviewProps {
   params: Promise<{ locale: string }>;
@@ -90,7 +90,7 @@ export default async function ArchitectureReviewPage({ params }: ArchitectureRev
             {dict.whatYouGetSubtitle}
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {content.whatYouGet.map((item, i) => (
+            {content.whatYouGet.map((item: string, i: number) => (
               <SpotlightCard key={i}>
                 <div className="flex items-start gap-3">
                   <FileCheck className="w-5 h-5 text-primary mt-0.5 shrink-0" />
@@ -108,7 +108,7 @@ export default async function ArchitectureReviewPage({ params }: ArchitectureRev
             {dict.whoItsForSubtitle}
           </p>
           <ul className="space-y-3">
-            {content.fitCriteria.map((criterion, i) => (
+            {content.fitCriteria.map((criterion: string, i: number) => (
               <li key={i} className="flex items-start gap-3">
                 <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 shrink-0" />
                 <span className="text-gray-300">{criterion}</span>
@@ -124,7 +124,7 @@ export default async function ArchitectureReviewPage({ params }: ArchitectureRev
             {dict.whoItsNotForSubtitle}
           </p>
           <ul className="space-y-3">
-            {content.nonFitCriteria.map((criterion, i) => (
+            {content.nonFitCriteria.map((criterion: string, i: number) => (
               <li key={i} className="flex items-start gap-3">
                 <XCircle className="w-5 h-5 text-red-400 mt-0.5 shrink-0" />
                 <span className="text-gray-300">{criterion}</span>

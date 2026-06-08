@@ -1,9 +1,10 @@
-import { ProjectUseCases } from "../../application/use-cases/ProjectUseCases";
-import { PageHeader } from "../../components/ui/PageHeader";
-import { Grid } from "../../components/ui/Grid";
-import { ProjectCard } from "../../components/ui/ProjectCard";
+import { ProjectUseCases } from "../../../application/use-cases/ProjectUseCases";
+import { PageHeader } from "../../../components/ui/PageHeader";
+import { Grid } from "../../../components/ui/Grid";
+import { ProjectCard } from "../../../components/ui/ProjectCard";
 import { Metadata } from "next";
-import { siteUrl } from "../../lib/site";
+import { siteUrl } from "../../../lib/site";
+import { Project } from "../../../domain/entities/Project";
 
 interface ProjectsIndexProps {
   params: Promise<{ locale: string }>;
@@ -43,7 +44,7 @@ export default async function ProjectsIndex({ params }: ProjectsIndexProps) {
         <PageHeader title={title} description={desc} />
 
         <Grid>
-          {projects.map((project) => (
+          {projects.map((project: Project) => (
             <ProjectCard 
               key={project.slug}
               title={project.title}

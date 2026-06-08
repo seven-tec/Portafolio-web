@@ -3,7 +3,7 @@
 import { useActionState, useState } from "react";
 import { submitArchitectureReview, type FormState } from "./actions";
 import { AlertCircle, AlertTriangle, ArrowRight, ChevronDown, ChevronUp, Send } from "lucide-react";
-import type { ArchitectureReviewField } from "../../domain/entities/ArchitectureReview";
+import type { ArchitectureReviewField } from "../../../domain/entities/ArchitectureReview";
 
 const initialState: FormState = {
   success: false,
@@ -119,7 +119,7 @@ export function ArchitectureReviewForm({
                   }`}
                 >
                   <option value="">Seleccionar...</option>
-                  {(field.options ?? []).map((opt) => (
+                  {(field.options ?? []).map((opt: string) => (
                     <option key={opt} value={opt}>
                       {opt.charAt(0).toUpperCase() + opt.slice(1)}
                     </option>
@@ -202,7 +202,7 @@ export function ArchitectureReviewForm({
                           }`}
                         >
                           <option value="">Seleccionar...</option>
-                          {(field.options ?? []).map((opt) => (
+                          {(field.options ?? []).map((opt: string) => (
                             <option key={opt} value={opt}>
                               {opt.charAt(0).toUpperCase() + opt.slice(1)}
                             </option>

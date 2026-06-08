@@ -1,11 +1,11 @@
-import { EngramUseCases } from "../../../application/use-cases/EngramUseCases";
+import { EngramUseCases } from "../../../../application/use-cases/EngramUseCases";
 import { notFound } from "next/navigation";
 import { Metadata } from 'next';
 import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypePrettyCode from "rehype-pretty-code";
-import { ArchitectureFlow } from "../../../components/mdx/ArchitectureFlow";
-import { WaveformPlayer } from "../../../components/mdx/WaveformPlayer";
-import { siteUrl } from "../../../lib/site";
+import { ArchitectureFlow } from "../../../../components/mdx/ArchitectureFlow";
+import { WaveformPlayer } from "../../../../components/mdx/WaveformPlayer";
+import { siteUrl } from "../../../../lib/site";
 
 interface NoteDetailProps {
   params: Promise<{ locale: string; slug: string }>;

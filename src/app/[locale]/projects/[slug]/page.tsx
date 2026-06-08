@@ -1,12 +1,12 @@
-import { ProjectUseCases } from "../../../application/use-cases/ProjectUseCases";
+import { ProjectUseCases } from "../../../../application/use-cases/ProjectUseCases";
 import { notFound } from "next/navigation";
 import { Metadata } from 'next';
 import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypePrettyCode from "rehype-pretty-code";
-import { ArchitectureFlow } from "../../../components/mdx/ArchitectureFlow";
-import { WaveformPlayer } from "../../../components/mdx/WaveformPlayer";
-import { SpotlightCard } from "../../../components/SpotlightCard";
-import { siteUrl } from "../../../lib/site";
+import { ArchitectureFlow } from "../../../../components/mdx/ArchitectureFlow";
+import { WaveformPlayer } from "../../../../components/mdx/WaveformPlayer";
+import { SpotlightCard } from "../../../../components/SpotlightCard";
+import { siteUrl } from "../../../../lib/site";
 
 interface ProjectDetailProps {
   params: Promise<{ locale: string; slug: string }>;
@@ -108,7 +108,7 @@ export default async function ProjectDetail({ params }: ProjectDetailProps) {
           {/* Header */}
           <header className="space-y-4">
             <div className="flex flex-wrap gap-2">
-              {project.tags.map((tag) => (
+              {project.tags.map((tag: string) => (
                 <span key={tag} className="text-xs font-mono bg-gray-900 px-2 py-1 rounded text-emerald-400">
                   {tag}
                 </span>
@@ -129,7 +129,7 @@ export default async function ProjectDetail({ params }: ProjectDetailProps) {
                 {dict.impactMetrics}
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {project.metrics.map((metric) => (
+                {project.metrics.map((metric: string) => (
                   <SpotlightCard key={metric}>
                     <div className="flex flex-col h-full justify-between">
                       <span className="text-xs font-mono text-emerald-400 mb-2">

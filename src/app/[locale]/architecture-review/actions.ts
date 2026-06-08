@@ -1,6 +1,6 @@
 "use server";
 
-import { sendLead } from "../../infrastructure/leadSender";
+import { sendLead } from "../../../infrastructure/leadSender";
 
 export type FormState = {
   success: boolean;

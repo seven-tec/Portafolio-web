@@ -1,8 +1,9 @@
-import { EngramUseCases } from "../../application/use-cases/EngramUseCases";
-import { PageHeader } from "../../components/ui/PageHeader";
-import { Grid } from "../../components/ui/Grid";
-import { EngramCard } from "../../components/ui/EngramCard";
-import { siteUrl } from "../../lib/site";
+import { EngramUseCases } from "../../../application/use-cases/EngramUseCases";
+import { PageHeader } from "../../../components/ui/PageHeader";
+import { Grid } from "../../../components/ui/Grid";
+import { EngramCard } from "../../../components/ui/EngramCard";
+import { siteUrl } from "../../../lib/site";
+import { Engram } from "../../../domain/entities/Engram";
 import { Metadata } from "next";
 
 interface NotesIndexProps {
@@ -43,7 +44,7 @@ export default async function NotesIndex({ params }: NotesIndexProps) {
         <PageHeader title={title} description={desc} />
 
         <Grid>
-          {engrams.map((engram) => (
+          {engrams.map((engram: Engram) => (
             <EngramCard 
               key={engram.slug}
               title={engram.title}
