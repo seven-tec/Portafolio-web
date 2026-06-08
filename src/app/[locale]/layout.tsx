@@ -84,7 +84,7 @@ export default async function RootLayout({ children, params }: LayoutProps) {
           <div className="max-w-4xl mx-auto px-8 py-4 flex justify-between items-center">
             <Link 
               href={`/${activeLocale}`} 
-              className="flex items-center gap-2 hover:opacity-90 transition-opacity"
+              className="flex items-center gap-2 hover:opacity-90 transition-opacity cursor-pointer"
             >
               <svg 
                 viewBox="45 60 165 115" 
@@ -101,29 +101,29 @@ export default async function RootLayout({ children, params }: LayoutProps) {
             </Link>
             
             <div className="flex items-center gap-6 text-sm font-medium text-gray-400">
-              <Link href={`/${activeLocale}`} className="hover:text-white transition-colors">
+              <Link href={`/${activeLocale}`} className="hover:text-white transition-colors cursor-pointer">
                 {dict.home}
               </Link>
-              <Link href={`/${activeLocale}/projects`} className="hover:text-white transition-colors">
+              <Link href={`/${activeLocale}/projects`} className="hover:text-white transition-colors cursor-pointer">
                 {dict.projects}
               </Link>
-              <Link href={`/${activeLocale}/notes`} className="hover:text-white transition-colors">
+              <Link href={`/${activeLocale}/notes`} className="hover:text-white transition-colors cursor-pointer">
                 {dict.notes}
               </Link>
               <Link 
                 href={`/${activeLocale}/architecture-review`} 
-                className="bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 hover:border-primary/40 px-3 py-1.5 rounded-lg text-xs transition-all font-semibold"
+                className="bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 hover:border-primary/40 px-3 py-1.5 rounded-lg text-xs transition-all font-semibold cursor-pointer"
               >
                 {dict.cta}
               </Link>
 
               {/* Language Selector */}
               <div className="flex items-center gap-1.5 border border-border/40 rounded-full px-2 py-0.5 text-[11px] font-mono bg-surface/20">
-                <Link href="/es" className={activeLocale === "es" ? "text-primary font-bold" : "text-gray-500 hover:text-gray-300 transition-colors"}>
+                <Link href="/es" className={`${activeLocale === "es" ? "text-primary font-bold" : "text-gray-500 hover:text-gray-300 transition-colors"} cursor-pointer`}>
                   ES
                 </Link>
                 <span className="text-border/30 select-none">|</span>
-                <Link href="/en" className={activeLocale === "en" ? "text-primary font-bold" : "text-gray-500 hover:text-gray-300 transition-colors"}>
+                <Link href="/en" className={`${activeLocale === "en" ? "text-primary font-bold" : "text-gray-500 hover:text-gray-300 transition-colors"} cursor-pointer`}>
                   EN
                 </Link>
               </div>
