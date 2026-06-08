@@ -1,9 +1,8 @@
 import { EngramUseCases } from "../../../application/use-cases/EngramUseCases";
 import { PageHeader } from "../../../components/ui/PageHeader";
-import { Grid } from "../../../components/ui/Grid";
+import { SearchableGrid } from "../../../components/ui/SearchableGrid";
 import { EngramCard } from "../../../components/ui/EngramCard";
 import { siteUrl } from "../../../lib/site";
-import { Engram } from "../../../domain/entities/Engram";
 import { Metadata } from "next";
 
 interface NotesIndexProps {
@@ -43,8 +42,12 @@ export default async function NotesIndex({ params }: NotesIndexProps) {
         
         <PageHeader title={title} description={desc} />
 
-        <Grid>
-          {engrams.map((engram: Engram) => (
+        <SearchableGrid
+          items={engrams}
+          locale={activeLocale}
+          type="notes"
+          placeholder={activeLocale === "en" ? "Search journal entries..." : "Buscar entradas del diario..."}
+          renderItem={(engram) => (
             <EngramCard 
               key={engram.slug}
               title={engram.title}
@@ -53,8 +56,8 @@ export default async function NotesIndex({ params }: NotesIndexProps) {
               slug={engram.slug}
               locale={activeLocale}
             />
-          ))}
-        </Grid>
+          )}
+        />
 
       </div>
     </main>

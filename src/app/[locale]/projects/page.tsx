@@ -1,10 +1,9 @@
 import { ProjectUseCases } from "../../../application/use-cases/ProjectUseCases";
 import { PageHeader } from "../../../components/ui/PageHeader";
-import { Grid } from "../../../components/ui/Grid";
+import { SearchableGrid } from "../../../components/ui/SearchableGrid";
 import { ProjectCard } from "../../../components/ui/ProjectCard";
 import { Metadata } from "next";
 import { siteUrl } from "../../../lib/site";
-import { Project } from "../../../domain/entities/Project";
 
 interface ProjectsIndexProps {
   params: Promise<{ locale: string }>;
@@ -43,8 +42,12 @@ export default async function ProjectsIndex({ params }: ProjectsIndexProps) {
         
         <PageHeader title={title} description={desc} />
 
-        <Grid>
-          {projects.map((project: Project) => (
+        <SearchableGrid
+          items={projects}
+          locale={activeLocale}
+          type="projects"
+          placeholder={activeLocale === "en" ? "Search case studies..." : "Buscar casos de estudio..."}
+          renderItem={(project) => (
             <ProjectCard 
               key={project.slug}
               title={project.title}
@@ -54,8 +57,8 @@ export default async function ProjectsIndex({ params }: ProjectsIndexProps) {
               slug={project.slug}
               locale={activeLocale}
             />
-          ))}
-        </Grid>
+          )}
+        />
 
       </div>
     </main>
