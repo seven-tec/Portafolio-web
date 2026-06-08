@@ -4,11 +4,25 @@ import matter from "gray-matter";
 import { Project, ProjectFrontmatterSchema } from "../domain/entities/Project";
 import { Engram, EngramFrontmatterSchema } from "../domain/entities/Engram";
 
-// Ruta base asumiendo que corremos el código desde la raíz del proyecto
-const PROJECTS_PATH = path.join(process.cwd(), "content", "projects");
+// Rutas base asumiendo que corremos el código desde la raíz del proyecto
+const PROJECTS_PATH = (locale: string) => path.join(process.cwd(), "content", "projects", locale);
+const ENGRAMS_PATH = (locale: string) => path.join(process.cwd(), "content", "engrams", locale);
 
-export function getProjectBySlug(slug: string, basePath = PROJECTS_PATH): Project {
+function resolvePath(localeOrPath: string, defaultPathResolver: (loc: string) => string): string {
+  if (
+    localeOrPath.includes("/") || 
+    localeOrPath.includes("\\") || 
+    path.isAbsolute(localeOrPath) || 
+    localeOrPath.includes("mocks")
+  ) {
+    return localeOrPath;
+  }
+  return defaultPathResolver(localeOrPath);
+}
+
+export function getProjectBySlug(slug: string, localeOrPath = "es"): Project {
   const realSlug = slug.replace(/\.mdx$/, "");
+  const basePath = resolvePath(localeOrPath, PROJECTS_PATH);
   const fullPath = path.join(basePath, `${realSlug}.mdx`);
   const fileContents = fs.readFileSync(fullPath, "utf8");
 
@@ -25,23 +39,23 @@ export function getProjectBySlug(slug: string, basePath = PROJECTS_PATH): Projec
   };
 }
 
-export function getAllProjects(basePath = PROJECTS_PATH): Project[] {
+export function getAllProjects(localeOrPath = "es"): Project[] {
+  const basePath = resolvePath(localeOrPath, PROJECTS_PATH);
   if (!fs.existsSync(basePath)) return [];
   
   const files = fs.readdirSync(basePath);
   const projects = files
     .filter((file) => file.endsWith(".mdx"))
-    .map((file) => getProjectBySlug(file, basePath))
+    .map((file) => getProjectBySlug(file, localeOrPath))
     // Ordenamos por fecha descendente
     .sort((a, b) => (a.date > b.date ? -1 : 1));
 
   return projects;
 }
 
-const ENGRAMS_PATH = path.join(process.cwd(), "content", "engrams");
-
-export function getEngramBySlug(slug: string, basePath = ENGRAMS_PATH): Engram {
+export function getEngramBySlug(slug: string, localeOrPath = "es"): Engram {
   const realSlug = slug.replace(/\.mdx$/, "");
+  const basePath = resolvePath(localeOrPath, ENGRAMS_PATH);
   const fullPath = path.join(basePath, `${realSlug}.mdx`);
   const fileContents = fs.readFileSync(fullPath, "utf8");
 
@@ -57,13 +71,14 @@ export function getEngramBySlug(slug: string, basePath = ENGRAMS_PATH): Engram {
   };
 }
 
-export function getAllEngrams(basePath = ENGRAMS_PATH): Engram[] {
+export function getAllEngrams(localeOrPath = "es"): Engram[] {
+  const basePath = resolvePath(localeOrPath, ENGRAMS_PATH);
   if (!fs.existsSync(basePath)) return [];
   
   const files = fs.readdirSync(basePath);
   const engrams = files
     .filter((file) => file.endsWith(".mdx"))
-    .map((file) => getEngramBySlug(file, basePath))
+    .map((file) => getEngramBySlug(file, localeOrPath))
     .sort((a, b) => (a.date > b.date ? -1 : 1));
 
   return engrams;

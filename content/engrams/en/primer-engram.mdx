@@ -1,0 +1,28 @@
+---
+title: "Implementing Clean Architecture in Next.js 16"
+topic: "Architecture"
+date: "2026-05-08"
+readTimeMinutes: 5
+---
+
+# Note #001
+Decoupling infrastructure from application logic allows us to scale without fear of framework breaking changes.
+Visit http://localhost:3000/en/notes/primer-engram and check if it runs.
+
+## Shiki Highlight Test with Rust
+
+```rust
+#[derive(Debug)]
+pub struct Engine<T> {
+    pub strategy: T,
+}
+
+impl<T> Engine<T>
+where
+    T: Strategy + Send + Sync + 'static,
+{
+    pub async fn run(&self) -> Result<(), Error> {
+        self.strategy.execute().await
+    }
+}
+```

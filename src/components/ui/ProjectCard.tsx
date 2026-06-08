@@ -9,14 +9,16 @@ interface ProjectCardProps {
   tags: string[];
   date: string;
   slug: string;
+  locale: string;
   variant?: "default" | "featured";
 }
 
-export function ProjectCard({ title, summary, tags, date, slug, variant = "default" }: ProjectCardProps) {
+export function ProjectCard({ title, summary, tags, date, slug, locale, variant = "default" }: ProjectCardProps) {
   const displayedTags = variant === "featured" ? tags.slice(0, 2) : tags;
+  const isEn = locale === "en";
 
   return (
-    <Link href={`/projects/${slug}`} className="block group">
+    <Link href={`/${locale}/projects/${slug}`} className="block group">
       <SpotlightCard>
         <div className="flex flex-col h-full">
           <div className="flex flex-wrap gap-2 mb-4">
@@ -37,7 +39,7 @@ export function ProjectCard({ title, summary, tags, date, slug, variant = "defau
             <div className="mt-6 pt-4 border-t border-border/50 flex justify-between items-center text-xs font-mono text-gray-500">
               <span>{date}</span>
               <span className="flex items-center text-primary/0 group-hover:text-primary transition-colors duration-300">
-                Leer caso <ArrowRight className="w-3 h-3 ml-1" />
+                {isEn ? "Read case" : "Leer caso"} <ArrowRight className="w-3 h-3 ml-1" />
               </span>
             </div>
           )}

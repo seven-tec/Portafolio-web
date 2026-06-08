@@ -1,0 +1,57 @@
+---
+title: "NovelaVox Studio 3.1: Local TTS Orchestration"
+summary: "AI-driven narrative audio generation platform featuring local persistence and a professional studio UI."
+tags: ["Local AI", "IndexedDB", "TypeScript", "Agent Orchestration"]
+date: "2026-04-20"
+metrics: ["Zero Latency Playback", "100% Local Persistence", "Multivocal Generation"]
+---
+
+## The Narrative and Technical Challenge
+
+Generating immersive narrative audio for an expansive transmedia universe —specifically a web novel with a deep tribal aesthetic and multiple character designs— presented an unusual technical challenge. Relying exclusively on generic cloud APIs caused two critical problems:
+
+1. **Lack of granularity:** Standard models failed to capture the specific intonation and "color" required for each character of the lore.
+2. **Latency and Costs:** Every single change in a line of dialogue required a new network request, making the creative flow in the interface slow and economically inefficient at scale.
+
+## Architectural Decisions
+
+To solve this, I designed **NovelaVox Studio 3.1**, a tool that shifts the computational and storage weight entirely to the client side:
+
+1. **Heavy Persistence in IndexedDB:** Instead of saturating a backend with temporary `.wav` files, all character metadata, scripts, and generated audio files are stored locally using IndexedDB. This enables a fluid user experience with zero network loading times when switching projects.
+2. **Professional Studio UI/UX:** An interface similar to modern DAWs (Digital Audio Workstations) was built, featuring granular controls for pitch, speed, and pauses, allowing milimetric adjustments before synthesis.
+3. **Local Model Orchestration:** The system orchestrates text-to-speech (TTS) synthesis by integrating local models for final rendering, reserving external high-performance APIs (such as Google AI Pro) solely when complex semantic inferences are required for text interpretation.
+
+<WaveformPlayer duration="00:42" />
+
+## Trade-offs (Design Decisions)
+
+| Approach | Advantages | Disadvantages / Costs |
+| :--- | :--- | :--- |
+| **IndexedDB vs Cloud Storage** | Complete privacy, zero hosting costs, zero read latency. | Dependent on the user's browser storage quota. |
+| **Local Processing vs 100% API** | Absolute control of the audio pipeline, offline work capability. | Higher RAM and CPU consumption on the client machine. |
+
+## The Persistence Core
+
+Handling giant audio blobs in the browser required an efficient abstraction layer over IndexedDB to avoid blocking the main thread.
+
+```typescript
+// Simplified persistence service abstraction in NovelaVox 3.1
+export class AudioStorageService {
+  async saveCharacterAudio(characterId: string, audioBlob: Blob): Promise<void> {
+    const db = await this.initDB();
+    const transaction = db.transaction(['voice_takes'], 'readwrite');
+    const store = transaction.objectStore('voice_takes');
+    
+    // Efficient storage without blocking the UI thread
+    await store.put({
+      id: `${characterId}_${Date.now()}`,
+      blob: audioBlob,
+      timestamp: new Date().toISOString()
+    });
+  }
+}
+```
+
+## Impact
+
+The result is a full audio studio running in the browser, capable of generating hours of immersive narration without incurring cloud infrastructure costs, enabling an instantaneous, iterative workflow.

@@ -8,29 +8,40 @@ import { WaveformPlayer } from "../../../components/mdx/WaveformPlayer";
 import { SpotlightCard } from "../../../components/SpotlightCard";
 import { siteUrl } from "../../../lib/site";
 
+interface ProjectDetailProps {
+  params: Promise<{ locale: string; slug: string }>;
+}
+
 export async function generateStaticParams() {
-  const projects = ProjectUseCases.getPublishedProjects();
-  return projects.map((project) => ({ slug: project.slug }));
+  const locales = ["es", "en"];
+  const params: { locale: string; slug: string }[] = [];
+  
+  for (const locale of locales) {
+    const projects = ProjectUseCases.getPublishedProjects(locale);
+    for (const project of projects) {
+      params.push({ locale, slug: project.slug });
+    }
+  }
+  
+  return params;
 }
 
 export async function generateMetadata({ 
   params 
-}: { 
-  params: Promise<{ slug: string }> 
-}): Promise<Metadata> {
-  const { slug } = await params;
-  const project = ProjectUseCases.getProjectDetail(slug);
+}: ProjectDetailProps): Promise<Metadata> {
+  const { slug, locale } = await params;
+  const project = ProjectUseCases.getProjectDetail(slug, locale);
 
   return {
     title: project.title,
     description: project.summary,
     alternates: {
-      canonical: siteUrl(`/projects/${slug}`),
+      canonical: `${siteUrl()}/${locale}/projects/${slug}`,
     },
     openGraph: {
       title: project.title,
       description: project.summary,
-      url: siteUrl(`/projects/${slug}`),
+      url: `${siteUrl()}/${locale}/projects/${slug}`,
       type: 'article',
       publishedTime: project.date,
       authors: ['Seven'],
@@ -44,10 +55,37 @@ export async function generateMetadata({
   };
 }
 
-export default async function ProjectDetail({ params }: { params: Promise<{ slug: string }> }) {
+const dicts = {
+  es: {
+    impactMetrics: "Métricas de Impacto",
+    logLabel: "[LOGRO]",
+    dateLabel: "Fecha",
+    roleLabel: "Rol",
+    roleValue: "Arquitecto de Software",
+    codeLabel: "Código",
+    demoLabel: "Demo",
+    viewRepo: "Ver Repositorio",
+    viewProject: "Ver Proyecto",
+  },
+  en: {
+    impactMetrics: "Impact Metrics",
+    logLabel: "[ACHIEVEMENT]",
+    dateLabel: "Date",
+    roleLabel: "Role",
+    roleValue: "Software Architect",
+    codeLabel: "Code",
+    demoLabel: "Demo",
+    viewRepo: "View Repository",
+    viewProject: "View Project",
+  }
+} as const;
+
+export default async function ProjectDetail({ params }: ProjectDetailProps) {
   try {
-    const { slug } = await params;
-    const project = ProjectUseCases.getProjectDetail(slug);
+    const { slug, locale } = await params;
+    const activeLocale = (locale === "en" ? "en" : "es") as "en" | "es";
+    const project = ProjectUseCases.getProjectDetail(slug, activeLocale);
+    const dict = dicts[activeLocale];
 
     const mdxOptions = {
       mdxOptions: {
@@ -88,14 +126,14 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
           {project.metrics && project.metrics.length > 0 && (
             <section>
               <h2 className="text-sm font-mono text-gray-500 uppercase tracking-wider mb-4">
-                Métricas de Impacto
+                {dict.impactMetrics}
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {project.metrics.map((metric) => (
                   <SpotlightCard key={metric}>
                     <div className="flex flex-col h-full justify-between">
                       <span className="text-xs font-mono text-emerald-400 mb-2">
-                        [LOGRO]
+                        {dict.logLabel}
                       </span>
                       <p className="text-base font-medium text-white">
                         {metric}
@@ -113,33 +151,33 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
             <aside className="lg:col-span-1 space-y-6 text-sm">
               <div>
                 <h3 className="text-xs font-mono text-gray-600 uppercase tracking-wider mb-1">
-                  Fecha
+                  {dict.dateLabel}
                 </h3>
                 <p className="text-gray-400 font-mono">{project.date}</p>
               </div>
               <div>
                 <h3 className="text-xs font-mono text-gray-600 uppercase tracking-wider mb-1">
-                  Rol
+                  {dict.roleLabel}
                 </h3>
-                <p className="text-gray-400">Arquitecto de Software</p>
+                <p className="text-gray-400">{dict.roleValue}</p>
               </div>
               {project.repositoryUrl && (
                 <div>
                   <h3 className="text-xs font-mono text-gray-600 uppercase tracking-wider mb-1">
-                    Código
+                    {dict.codeLabel}
                   </h3>
                   <a href={project.repositoryUrl} target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:underline font-mono">
-                    Ver Repositorio
+                    {dict.viewRepo}
                   </a>
                 </div>
               )}
               {project.demoUrl && (
                 <div>
                   <h3 className="text-xs font-mono text-gray-600 uppercase tracking-wider mb-1">
-                    Demo
+                    {dict.demoLabel}
                   </h3>
                   <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:underline font-mono">
-                    Ver Proyecto
+                    {dict.viewProject}
                   </a>
                 </div>
               )}

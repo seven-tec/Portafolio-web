@@ -1,10 +1,21 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "SevenTec | Arquitectura de Sistemas y Alto Rendimiento";
+export const alt = "SevenTec | Systems Architecture & High Performance";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default function Image() {
+interface ImageProps {
+  params: Promise<{ locale: string }>;
+}
+
+export async function generateStaticParams() {
+  return [{ locale: "es" }, { locale: "en" }];
+}
+
+export default async function Image({ params }: ImageProps) {
+  const { locale } = await params;
+  const isEn = locale === "en";
+
   return new ImageResponse(
     (
       <div
@@ -52,7 +63,7 @@ export default function Image() {
               letterSpacing: "2px",
             }}
           >
-            ARQUITECTURA DE SISTEMAS
+            {isEn ? "SYSTEMS ARCHITECTURE" : "ARQUITECTURA DE SISTEMAS"}
           </div>
         </div>
 
@@ -66,7 +77,7 @@ export default function Image() {
             marginBottom: "12px",
           }}
         >
-          Arquitectura web
+          {isEn ? "High-performance" : "Arquitectura web"}
         </div>
         <div
           style={{
@@ -78,7 +89,7 @@ export default function Image() {
             marginBottom: "32px",
           }}
         >
-          de alto rendimiento
+          {isEn ? "web architecture" : "de alto rendimiento"}
         </div>
         <div
           style={{
@@ -88,7 +99,9 @@ export default function Image() {
             letterSpacing: "-0.5px",
           }}
         >
-          IA Aplicada · Performance Engineering · Arquitectura Modular
+          {isEn
+            ? "Applied AI · Performance Engineering · Modular Architecture"
+            : "IA Aplicada · Performance Engineering · Arquitectura Modular"}
         </div>
       </div>
     ),

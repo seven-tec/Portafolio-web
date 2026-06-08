@@ -4,25 +4,34 @@ import { EngramUseCases } from '../application/use-cases/EngramUseCases';
 import { siteUrl } from '../lib/site';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const projects = ProjectUseCases.getPublishedProjects();
-  const engrams = EngramUseCases.getPublishedEngrams();
+  const locales = ["es", "en"];
+  const urls: { url: string; lastModified: Date }[] = [];
 
-  const projectUrls = projects.map((p) => ({
-    url: siteUrl(`/projects/${p.slug}`),
-    lastModified: new Date(),
-  }));
+  for (const locale of locales) {
+    // Base paths
+    urls.push({ url: `${siteUrl()}/${locale}`, lastModified: new Date() });
+    urls.push({ url: `${siteUrl()}/${locale}/projects`, lastModified: new Date() });
+    urls.push({ url: `${siteUrl()}/${locale}/notes`, lastModified: new Date() });
+    urls.push({ url: `${siteUrl()}/${locale}/architecture-review`, lastModified: new Date() });
 
-  const engramUrls = engrams.map((e) => ({
-    url: siteUrl(`/engrams/${e.slug}`),
-    lastModified: new Date(),
-  }));
+    // Project paths
+    const projects = ProjectUseCases.getPublishedProjects(locale);
+    projects.forEach((p) => {
+      urls.push({
+        url: `${siteUrl()}/${locale}/projects/${p.slug}`,
+        lastModified: new Date(),
+      });
+    });
 
-  return [
-    { url: siteUrl(), lastModified: new Date() },
-    { url: siteUrl('/projects'), lastModified: new Date() },
-    { url: siteUrl('/engrams'), lastModified: new Date() },
-    { url: siteUrl('/architecture-review'), lastModified: new Date() },
-    ...projectUrls,
-    ...engramUrls,
-  ];
+    // Note paths
+    const engrams = EngramUseCases.getPublishedEngrams(locale);
+    engrams.forEach((e) => {
+      urls.push({
+        url: `${siteUrl()}/${locale}/notes/${e.slug}`,
+        lastModified: new Date(),
+      });
+    });
+  }
+
+  return urls;
 }
