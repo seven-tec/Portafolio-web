@@ -5,30 +5,27 @@ import { SearchInput } from "./SearchInput";
 import { TagCloud } from "./TagCloud";
 import { Grid } from "./Grid";
 import { normalizeText } from "../../lib/search";
+import { Project } from "../../domain/entities/Project";
+import { Engram } from "../../domain/entities/Engram";
+import { ProjectCard } from "./ProjectCard";
+import { EngramCard } from "./EngramCard";
 
-interface SearchableItem {
-  slug: string;
-  title?: string;
-  summary?: string;
-  topic?: string;
-  tags?: string[];
-}
+type SearchableGridProps =
+  | {
+      type: "projects";
+      items: Project[];
+      locale: "en" | "es";
+      placeholder?: string;
+    }
+  | {
+      type: "notes";
+      items: Engram[];
+      locale: "en" | "es";
+      placeholder?: string;
+    };
 
-interface SearchableGridProps<T extends SearchableItem> {
-  items: T[];
-  locale: "en" | "es";
-  type: "projects" | "notes";
-  placeholder?: string;
-  renderItem: (item: T) => React.ReactNode;
-}
-
-export function SearchableGrid<T extends SearchableItem>({
-  items,
-  locale,
-  type,
-  placeholder,
-  renderItem,
-}: SearchableGridProps<T>) {
+export function SearchableGrid(props: SearchableGridProps) {
+  const { items, locale, type, placeholder } = props;
   const [query, setQuery] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
@@ -36,9 +33,9 @@ export function SearchableGrid<T extends SearchableItem>({
   const uniqueTags = useMemo(() => {
     return Array.from(
       new Set(
-        items.flatMap((item: T) => {
+        items.flatMap((item) => {
           const tags = item.tags || [];
-          const topic = item.topic ? [item.topic] : [];
+          const topic = "topic" in item && item.topic ? [item.topic] : [];
           return [...tags, ...topic];
         })
       )
@@ -49,11 +46,11 @@ export function SearchableGrid<T extends SearchableItem>({
 
   // 2. Perform intersection filtering and text matching
   const filteredItems = useMemo(() => {
-    return items.filter((item: T) => {
+    return items.filter((item) => {
       // A. Tag intersection filtering (AND match)
       if (selectedTags.length > 0) {
         const itemTags = item.tags || [];
-        const itemTopic = item.topic ? [item.topic] : [];
+        const itemTopic = "topic" in item && item.topic ? [item.topic] : [];
         const allItemTags = [...itemTags, ...itemTopic].map((t) => t.toLowerCase());
 
         const matchesAllTags = selectedTags.every((selectedTag) =>
@@ -67,7 +64,11 @@ export function SearchableGrid<T extends SearchableItem>({
 
       const normalizedQuery = normalizeText(query);
       const normalizedTitle = normalizeText(item.title || "");
-      const normalizedSummary = normalizeText(item.summary || item.topic || "");
+      const normalizedSummary = normalizeText(
+        ("summary" in item && item.summary) ||
+        ("topic" in item && item.topic) ||
+        ""
+      );
       const itemTags = item.tags || [];
 
       const matchesTitle = normalizedTitle.includes(normalizedQuery);
@@ -124,9 +125,26 @@ export function SearchableGrid<T extends SearchableItem>({
       {filteredItems.length > 0 ? (
         <div id="search-results">
           <Grid>
-            {filteredItems.map((item: T) => (
+            {filteredItems.map((item) => (
               <div key={item.slug} className="transition-all duration-500 ease-out animate-fade-in-up">
-                {renderItem(item)}
+                {type === "projects" ? (
+                  <ProjectCard
+                    title={item.title}
+                    summary={(item as Project).summary}
+                    tags={item.tags || []}
+                    date={item.date}
+                    slug={item.slug}
+                    locale={locale}
+                  />
+                ) : (
+                  <EngramCard
+                    title={item.title}
+                    topic={(item as Engram).topic}
+                    date={item.date}
+                    slug={item.slug}
+                    locale={locale}
+                  />
+                )}
               </div>
             ))}
           </Grid>

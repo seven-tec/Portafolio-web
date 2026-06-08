@@ -1,7 +1,6 @@
 import { ProjectUseCases } from "../../../application/use-cases/ProjectUseCases";
 import { PageHeader } from "../../../components/ui/PageHeader";
 import { SearchableGrid } from "../../../components/ui/SearchableGrid";
-import { ProjectCard } from "../../../components/ui/ProjectCard";
 import { Metadata } from "next";
 import { siteUrl } from "../../../lib/site";
 
@@ -47,17 +46,6 @@ export default async function ProjectsIndex({ params }: ProjectsIndexProps) {
           locale={activeLocale}
           type="projects"
           placeholder={activeLocale === "en" ? "Search case studies..." : "Buscar casos de estudio..."}
-          renderItem={(project) => (
-            <ProjectCard 
-              key={project.slug}
-              title={project.title}
-              summary={project.summary}
-              tags={project.tags}
-              date={project.date}
-              slug={project.slug}
-              locale={activeLocale}
-            />
-          )}
         />
 
       </div>

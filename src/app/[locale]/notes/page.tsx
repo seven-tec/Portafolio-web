@@ -1,7 +1,6 @@
 import { EngramUseCases } from "../../../application/use-cases/EngramUseCases";
 import { PageHeader } from "../../../components/ui/PageHeader";
 import { SearchableGrid } from "../../../components/ui/SearchableGrid";
-import { EngramCard } from "../../../components/ui/EngramCard";
 import { siteUrl } from "../../../lib/site";
 import { Metadata } from "next";
 
@@ -47,16 +46,6 @@ export default async function NotesIndex({ params }: NotesIndexProps) {
           locale={activeLocale}
           type="notes"
           placeholder={activeLocale === "en" ? "Search journal entries..." : "Buscar entradas del diario..."}
-          renderItem={(engram) => (
-            <EngramCard 
-              key={engram.slug}
-              title={engram.title}
-              topic={engram.topic}
-              date={engram.date}
-              slug={engram.slug}
-              locale={activeLocale}
-            />
-          )}
         />
 
       </div>
