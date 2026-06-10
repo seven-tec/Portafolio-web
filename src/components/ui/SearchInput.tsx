@@ -75,7 +75,7 @@ export function SearchInput({ value, onChange, onClear, placeholder, locale }: S
               inputRef.current?.focus();
             }}
             aria-label={locale === "en" ? "Clear search" : "Limpiar búsqueda"}
-            className="p-1 rounded-md text-gray-400 hover:text-primary hover:bg-white/5 transition-all duration-150"
+            className="p-1.5 rounded-md text-gray-400 hover:text-primary hover:bg-white/5 transition-all duration-300 ease-out hover:scale-105 active:scale-95 animate-fade-in"
           >
             <X className="h-4 w-4" />
           </button>

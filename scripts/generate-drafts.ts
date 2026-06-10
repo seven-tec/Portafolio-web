@@ -1,0 +1,322 @@
+import { execSync } from "child_process";
+import { writeFileSync, mkdirSync } from "fs";
+import { join } from "path";
+import { parseArgs } from "util";
+import { EngramFrontmatterSchema } from "../src/domain/entities/Engram";
+import { ProjectFrontmatterSchema } from "../src/domain/entities/Project";
+
+// 1. Parse CLI arguments using native util.parseArgs (Node 18.3+)
+const cleanArgs = process.argv.slice(2).filter(arg => arg !== "--");
+const { values } = parseArgs({
+  args: cleanArgs,
+  options: {
+    days: { type: "string" },
+    since: { type: "string" },
+    type: { type: "string" },
+    topic: { type: "string" },
+    featured: { type: "boolean" },
+    slug: { type: "string" },
+    "output-dir": { type: "string" },
+  },
+  strict: false,
+});
+
+// 2. Resolve default values and options
+const type = typeof values.type === "string" ? values.type : "engram";
+if (type !== "engram" && type !== "project") {
+  console.error(`Error: --type must be either 'engram' or 'project'. Received: '${type}'`);
+  process.exit(1);
+}
+
+const daysVal = typeof values.days === "string" ? values.days : undefined;
+const since = typeof values.since === "string" ? values.since : undefined;
+const days = since ? undefined : parseInt(daysVal || "7", 10);
+
+if (days !== undefined && (isNaN(days) || days < 0)) {
+  console.error(`Error: --days must be a non-negative number. Received: '${values.days}'`);
+  process.exit(1);
+}
+
+const topicEs = typeof values.topic === "string" ? values.topic : "Desarrollo";
+// Simple translation mapping for default topics
+const topicTranslations: Record<string, string> = {
+  "Desarrollo": "Development",
+  "Arquitectura": "Architecture",
+  "Diseño": "Design",
+  "Infraestructura": "Infrastructure",
+  "Rendimiento": "Performance",
+  "Seguridad": "Security",
+};
+const topicEn = topicTranslations[topicEs] || topicEs;
+
+const featured = !!values.featured;
+if (featured && type !== "project") {
+  console.error("Error: --featured flag is only valid when --type is 'project'.");
+  process.exit(1);
+}
+
+const dateStr = new Date().toISOString().slice(0, 10);
+const slug = typeof values.slug === "string" ? values.slug : `actividad-${dateStr}`;
+
+const outputDir = typeof values["output-dir"] === "string" ? values["output-dir"] : undefined;
+
+// 3. Extract commits using native Git command
+let commitLog = "";
+try {
+  // Determine since expression
+  const sinceExpr = since ? since : `${days} days ago`;
+  const gitCmd = `git log --no-merges --since="${sinceExpr}" --pretty=format:"%h|%s|%an|%ad" --date=short`;
+  commitLog = execSync(gitCmd, { encoding: "utf8" });
+} catch (error) {
+  console.error("Error executing git log. Ensure Git is installed and you are in a git repository:", error);
+  process.exit(1);
+}
+
+// 4. Parse and filter commits
+interface Commit {
+  hash: string;
+  message: string;
+  author: string;
+  date: string;
+  cleanMessage: string;
+  type: string;
+}
+
+const lines = commitLog.split("\n").map(l => l.trim()).filter(Boolean);
+const parsedCommits: Commit[] = [];
+
+for (const line of lines) {
+  const parts = line.split("|");
+  if (parts.length < 4) continue;
+  const [hash, message, author, date] = parts;
+
+  // Filter out trivial messages (wip, temp, chore)
+  const lowerMsg = message.toLowerCase();
+  if (
+    lowerMsg.startsWith("wip:") ||
+    lowerMsg.startsWith("temp:") ||
+    lowerMsg.startsWith("chore:") ||
+    message.trim() === ""
+  ) {
+    continue;
+  }
+
+  // Parse conventional commit type
+  let commitType = "other";
+  let cleanMessage = message;
+
+  const match = message.match(/^([a-zA-Z0-9_-]+)(?:\([a-zA-Z0-9_-]+\))?:\s*(.*)$/);
+  if (match) {
+    commitType = match[1].toLowerCase();
+    cleanMessage = match[2];
+  }
+
+  parsedCommits.push({
+    hash,
+    message,
+    author,
+    date,
+    cleanMessage,
+    type: commitType,
+  });
+}
+
+// 5. Exit if no relevant commits found
+if (parsedCommits.length === 0) {
+  console.log("No relevant development activity found in the specified range. No drafts created.");
+  process.exit(0);
+}
+
+// 6. Validate in-memory Frontmatter objects using domain schemas (Zod)
+const baseESFrontmatter: Record<string, unknown> = {
+  title: type === "engram" ? `Borrador de Actividad: ${slug}` : `Borrador de Proyecto: ${slug}`,
+  date: dateStr,
+  tags: ["git", "nextjs", "typescript"],
+};
+
+const baseENFrontmatter: Record<string, unknown> = {
+  title: type === "engram" ? `Activity Draft: ${slug}` : `Project Draft: ${slug}`,
+  date: dateStr,
+  tags: ["git", "nextjs", "typescript"],
+};
+
+if (type === "engram") {
+  baseESFrontmatter.topic = topicEs;
+  baseESFrontmatter.readTimeMinutes = 5;
+  baseESFrontmatter.summary = "Resumen autogenerado de la actividad técnica: implementación de features y resolución de bugs.";
+  baseESFrontmatter.difficulty = "Medium";
+
+  baseENFrontmatter.topic = topicEn;
+  baseENFrontmatter.readTimeMinutes = 5;
+  baseENFrontmatter.summary = "Autogenerated summary of technical activity: features implementation and bug resolution.";
+  baseENFrontmatter.difficulty = "Medium";
+
+  // Validate ES frontmatter structure
+  const esResult = EngramFrontmatterSchema.safeParse(baseESFrontmatter);
+  if (!esResult.success) {
+    console.error("Zod validation failed for generated Engram ES Frontmatter:");
+    console.error(JSON.stringify(esResult.error.format(), null, 2));
+    process.exit(1);
+  }
+
+  // Validate EN frontmatter structure
+  const enResult = EngramFrontmatterSchema.safeParse(baseENFrontmatter);
+  if (!enResult.success) {
+    console.error("Zod validation failed for generated Engram EN Frontmatter:");
+    console.error(JSON.stringify(enResult.error.format(), null, 2));
+    process.exit(1);
+  }
+} else {
+  baseESFrontmatter.summary = "Resumen autogenerado de la actividad del proyecto técnico.";
+  if (featured) baseESFrontmatter.featured = true;
+
+  baseENFrontmatter.summary = "Autogenerated summary of the technical project activity.";
+  if (featured) baseENFrontmatter.featured = true;
+
+  // Validate ES frontmatter structure
+  const esResult = ProjectFrontmatterSchema.safeParse(baseESFrontmatter);
+  if (!esResult.success) {
+    console.error("Zod validation failed for generated Project ES Frontmatter:");
+    console.error(JSON.stringify(esResult.error.format(), null, 2));
+    process.exit(1);
+  }
+
+  // Validate EN frontmatter structure
+  const enResult = ProjectFrontmatterSchema.safeParse(baseENFrontmatter);
+  if (!enResult.success) {
+    console.error("Zod validation failed for generated Project EN Frontmatter:");
+    console.error(JSON.stringify(enResult.error.format(), null, 2));
+    process.exit(1);
+  }
+}
+
+// 7. Group commits by category
+const featCommits = parsedCommits.filter(c => c.type === "feat");
+const fixCommits = parsedCommits.filter(c => c.type === "fix");
+const refactorCommits = parsedCommits.filter(c => c.type === "refactor" || c.type === "style");
+const perfCommits = parsedCommits.filter(c => c.type === "perf");
+const docsCommits = parsedCommits.filter(c => c.type === "docs");
+const testCommits = parsedCommits.filter(c => c.type === "test");
+const otherCommits = parsedCommits.filter(c => 
+  !["feat", "fix", "refactor", "style", "perf", "docs", "test"].includes(c.type)
+);
+
+// Helper to construct frontmatter string
+function buildYamlFrontmatter(obj: Record<string, unknown>): string {
+  const lines = ["---"];
+  for (const [key, value] of Object.entries(obj)) {
+    if (value === undefined) continue;
+    if (Array.isArray(value)) {
+      lines.push(`${key}: [${value.map(v => `"${v}"`).join(", ")}]`);
+    } else if (typeof value === "string") {
+      lines.push(`${key}: "${value.replace(/"/g, '\\"')}"`);
+    } else if (typeof value === "boolean") {
+      lines.push(`${key}: ${value}`);
+    } else {
+      lines.push(`${key}: ${value}`);
+    }
+  }
+  lines.push("---");
+  return lines.join("\n");
+}
+
+// 8. Build bilingual Markdown contents
+function buildListSection(title: string, commits: Commit[]): string {
+  if (commits.length === 0) return "";
+  const lines = [`### ${title}`];
+  for (const c of commits) {
+    lines.push(`- **[${c.hash}]** ${c.cleanMessage} *(by ${c.author} on ${c.date})*`);
+  }
+  return lines.join("\n") + "\n\n";
+}
+
+// Spanish body
+let esBody = "";
+if (type === "engram") {
+  esBody = `# Actividad Semanal (${dateStr})
+
+Este borrador recopila los desarrollos realizados en el repositorio local. ¡Revisá y ponete a escribir los detalles, boludo!
+
+## Hitos Técnicos Alcanzados
+
+`;
+  esBody += buildListSection("Características Nuevas (Features)", featCommits);
+  esBody += buildListSection("Correcciones (Bug Fixes)", fixCommits);
+  esBody += buildListSection("Refactorizaciones & Estilo", refactorCommits);
+  esBody += buildListSection("Rendimiento (Performance)", perfCommits);
+  esBody += buildListSection("Documentación (Documentation)", docsCommits);
+  esBody += buildListSection("Pruebas (Tests)", testCommits);
+  esBody += buildListSection("Otros Cambios", otherCommits);
+} else {
+  esBody = `# Caso de Estudio: ${slug}
+
+Borrador de proyecto autogenerado a partir de la actividad de Git.
+
+## Resumen del Proyecto
+Detallá acá de qué se trata el proyecto, el contexto de negocio, y las decisiones principales de arquitectura.
+
+## Detalles de Desarrollo e Implementación
+
+`;
+  esBody += buildListSection("Módulos Implementados (Features)", featCommits);
+  esBody += buildListSection("Correcciones y Estabilidad (Bug Fixes)", fixCommits);
+  esBody += buildListSection("Mejoras de Estructura (Refactoring)", refactorCommits);
+  esBody += buildListSection("Otros Hitos", [...perfCommits, ...docsCommits, ...testCommits, ...otherCommits]);
+}
+
+// English body
+let enBody = "";
+if (type === "engram") {
+  enBody = `# Weekly Activity (${dateStr})
+
+This draft compiles the developments completed in the local repository. Review and refine the details!
+
+## Technical Milestones
+
+`;
+  enBody += buildListSection("New Features", featCommits);
+  enBody += buildListSection("Bug Fixes", fixCommits);
+  enBody += buildListSection("Refactoring & Style", refactorCommits);
+  enBody += buildListSection("Performance", perfCommits);
+  enBody += buildListSection("Documentation", docsCommits);
+  enBody += buildListSection("Tests", testCommits);
+  enBody += buildListSection("Other Changes", otherCommits);
+} else {
+  enBody = `# Case Study: ${slug}
+
+Project draft autogenerated from Git development history.
+
+## Project Summary
+Describe the project context, business value, and primary systems architecture decisions here.
+
+## Development and Implementation Details
+
+`;
+  enBody += buildListSection("Features Implemented", featCommits);
+  enBody += buildListSection("Fixes and Stability", fixCommits);
+  enBody += buildListSection("Structure Improvements (Refactoring)", refactorCommits);
+  enBody += buildListSection("Other Milestones", [...perfCommits, ...docsCommits, ...testCommits, ...otherCommits]);
+}
+
+const esFileContent = `${buildYamlFrontmatter(baseESFrontmatter)}\n\n${esBody}`;
+const enFileContent = `${buildYamlFrontmatter(baseENFrontmatter)}\n\n${enBody}`;
+
+// 9. Determine write paths and write files
+const defaultDestDir = type === "engram" ? "content/engrams" : "content/projects";
+const resolvedESDir = outputDir ? join(outputDir, "es") : join(defaultDestDir, "es");
+const resolvedENDir = outputDir ? join(outputDir, "en") : join(defaultDestDir, "en");
+
+// Ensure directories exist
+mkdirSync(resolvedESDir, { recursive: true });
+mkdirSync(resolvedENDir, { recursive: true });
+
+const esFilePath = join(resolvedESDir, `${slug}.mdx`);
+const enFilePath = join(resolvedENDir, `${slug}.mdx`);
+
+writeFileSync(esFilePath, esFileContent, "utf8");
+writeFileSync(enFilePath, enFileContent, "utf8");
+
+console.log(`Borradores generados con éxito para la actividad de Git:`);
+console.log(`  - Español: ${esFilePath}`);
+console.log(`  - Inglés:  ${enFilePath}`);
+process.exit(0);

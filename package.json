@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test:parser": "tsx tests/infrastructure/test-parser.ts"
+    "test:parser": "tsx tests/infrastructure/test-parser.ts",
+    "test:filter": "tsx tests/lib/test-filter.ts",
+    "drafts": "tsx scripts/generate-drafts.ts"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.19",

@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import { SearchInput } from "./SearchInput";
 import { TagCloud } from "./TagCloud";
 import { Grid } from "./Grid";
-import { normalizeText } from "../../lib/search";
+import { filterContent } from "../../lib/filter";
 import { Project } from "../../domain/entities/Project";
 import { Engram } from "../../domain/entities/Engram";
 import { ProjectCard } from "./ProjectCard";
@@ -46,39 +46,7 @@ export function SearchableGrid(props: SearchableGridProps) {
 
   // 2. Perform intersection filtering and text matching
   const filteredItems = useMemo(() => {
-    return items.filter((item) => {
-      // A. Tag intersection filtering (AND match)
-      if (selectedTags.length > 0) {
-        const itemTags = item.tags || [];
-        const itemTopic = "topic" in item && item.topic ? [item.topic] : [];
-        const allItemTags = [...itemTags, ...itemTopic].map((t) => t.toLowerCase());
-
-        const matchesAllTags = selectedTags.every((selectedTag) =>
-          allItemTags.includes(selectedTag.toLowerCase())
-        );
-        if (!matchesAllTags) return false;
-      }
-
-      // B. Search query matching
-      if (!query) return true;
-
-      const normalizedQuery = normalizeText(query);
-      const normalizedTitle = normalizeText(item.title || "");
-      const normalizedSummary = normalizeText(
-        ("summary" in item && item.summary) ||
-        ("topic" in item && item.topic) ||
-        ""
-      );
-      const itemTags = item.tags || [];
-
-      const matchesTitle = normalizedTitle.includes(normalizedQuery);
-      const matchesSummary = normalizedSummary.includes(normalizedQuery);
-      const matchesTags = itemTags.some((tag: string) =>
-        normalizeText(tag).includes(normalizedQuery)
-      );
-
-      return matchesTitle || matchesSummary || matchesTags;
-    });
+    return filterContent(items as (Project | Engram)[], query, selectedTags);
   }, [items, query, selectedTags]);
 
   const handleToggleTag = (tag: string) => {
@@ -126,7 +94,7 @@ export function SearchableGrid(props: SearchableGridProps) {
         <div id="search-results">
           <Grid>
             {filteredItems.map((item) => (
-              <div key={item.slug} className="transition-all duration-500 ease-out animate-fade-in-up">
+              <div key={item.slug} className="transition-all duration-500 ease-out animate-pop-in">
                 {type === "projects" ? (
                   <ProjectCard
                     title={item.title}

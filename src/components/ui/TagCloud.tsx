@@ -27,10 +27,10 @@ export function TagCloud({ tags, selectedTags, onToggleTag, onClearAll, locale }
               role="checkbox"
               aria-checked={isSelected}
               onClick={() => onToggleTag(tag)}
-              className={`font-mono text-xs px-3 py-1.5 rounded-full border transition-all duration-200 cursor-pointer select-none ${
+              className={`font-mono text-xs px-3.5 py-1.5 rounded-full border transition-all duration-300 ease-out cursor-pointer select-none hover:scale-105 active:scale-95 focus-visible:ring-1 focus-visible:ring-primary/50 outline-none ${
                 isSelected
-                  ? "bg-primary/10 border-primary/40 text-primary hover:bg-primary/20 shadow-[0_0_12px_rgba(21,209,217,0.15)]"
-                  : "bg-gray-900/40 border-white/5 text-gray-400 hover:border-white/20 hover:text-gray-200 hover:bg-gray-900/70"
+                  ? "bg-primary/15 border-primary/50 text-primary hover:bg-primary/25 shadow-[0_0_15px_rgba(21,209,217,0.25)] scale-[1.03]"
+                  : "bg-gray-900/40 border-white/5 text-gray-400 hover:border-white/25 hover:text-gray-200 hover:bg-gray-900/70"
               }`}
             >
               #{tag}
@@ -42,7 +42,7 @@ export function TagCloud({ tags, selectedTags, onToggleTag, onClearAll, locale }
           <button
             type="button"
             onClick={onClearAll}
-            className="text-xs font-mono text-gray-500 hover:text-primary underline underline-offset-4 cursor-pointer transition-colors duration-150 ml-2"
+            className="text-xs font-mono text-gray-500 hover:text-primary underline underline-offset-4 cursor-pointer transition-all duration-300 ease-out hover:scale-105 active:scale-95 ml-2 animate-fade-in"
           >
             {locale === "en" ? "Clear filters" : "Limpiar filtros"}
           </button>
